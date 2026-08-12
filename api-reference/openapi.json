@@ -4,43 +4,18 @@
     "title": "Reqlick API",
     "description": "REST API for Reqlick — link shortening, QR codes, file-to-link, custom domains and analytics.\n\nAuthenticate with a workspace API key (`Authorization: Bearer rqk_...`), created under Settings → API Keys.\n\nA key is scoped to the single workspace it was created in. Using it against a different workspace returns 403, even when the owning user is a member of both.\n\nAPI access requires a paid plan.",
     "version": "3.0.0",
-    "contact": {
-      "name": "Reqlick Support",
-      "email": "support@reqlick.com"
-    }
+    "contact": { "name": "Reqlick Support", "email": "support@reqlick.com" }
   },
-  "servers": [
-    {
-      "url": "https://api.reqlick.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
+  "servers": [{ "url": "https://api.reqlick.com" }],
+  "security": [{ "bearerAuth": [] }],
   "tags": [
-    {
-      "name": "Links"
-    },
-    {
-      "name": "QR Codes"
-    },
-    {
-      "name": "Documents"
-    },
-    {
-      "name": "Domains"
-    },
-    {
-      "name": "Workspaces"
-    },
-    {
-      "name": "Users"
-    },
-    {
-      "name": "Subscriptions"
-    }
+    { "name": "Links" },
+    { "name": "QR Codes" },
+    { "name": "Documents" },
+    { "name": "Domains" },
+    { "name": "Workspaces" },
+    { "name": "Users" },
+    { "name": "Subscriptions" }
   ],
   "components": {
     "securitySchemes": {
@@ -53,174 +28,74 @@
     "responses": {
       "BadRequest": {
         "description": "Invalid request",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
       },
       "Unauthorized": {
         "description": "Missing, malformed or revoked API key — or the plan no longer includes API access",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
       },
       "Forbidden": {
         "description": "Authenticated, but the key has no access to this workspace or resource",
         "content": {
           "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            },
-            "example": {
-              "error": "This API key does not have access to this workspace"
-            }
+            "schema": { "$ref": "#/components/schemas/Error" },
+            "example": { "error": "This API key does not have access to this workspace" }
           }
         }
       },
       "NotFound": {
         "description": "Resource not found",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
       },
-      "TooManyRequests": {
-        "description": "Rate limit exceeded"
-      },
+      "TooManyRequests": { "description": "Rate limit exceeded" },
       "ServerError": {
         "description": "Server error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
       }
     },
     "schemas": {
       "Error": {
         "type": "object",
-        "properties": {
-          "error": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "error"
-        ]
+        "properties": { "error": { "type": "string" } },
+        "required": ["error"]
       },
       "Link": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "domain": {
-            "type": "string",
-            "examples": [
-              "rqk.sh"
-            ]
-          },
-          "key": {
-            "type": "string",
-            "description": "Short key. Combined with `domain` this forms the short URL."
-          },
-          "url": {
-            "type": "string",
-            "description": "Destination URL. Null for file links."
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "image": {
-            "type": "string"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "isArchived": {
-            "type": "boolean"
-          },
-          "isQR": {
-            "type": "boolean"
-          },
-          "isFile": {
-            "type": "boolean"
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ios": {
-            "type": "string",
-            "description": "iOS-specific destination."
-          },
-          "android": {
-            "type": "string",
-            "description": "Android-specific destination."
-          },
-          "workspaceId": {
-            "type": "string"
-          },
-          "documentId": {
-            "type": "string"
-          },
-          "clicks": {
-            "type": "integer"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string" },
+          "domain": { "type": "string", "examples": ["rqk.sh"] },
+          "key": { "type": "string", "description": "Short key. Combined with `domain` this forms the short URL." },
+          "url": { "type": "string", "description": "Destination URL. Null for file links." },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "image": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "isArchived": { "type": "boolean" },
+          "isQR": { "type": "boolean" },
+          "isFile": { "type": "boolean" },
+          "expiresAt": { "type": "string", "format": "date-time" },
+          "ios": { "type": "string", "description": "iOS-specific destination." },
+          "android": { "type": "string", "description": "Android-specific destination." },
+          "workspaceId": { "type": "string" },
+          "documentId": { "type": "string" },
+          "clicks": { "type": "integer" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         }
       },
       "LinkCreated": {
         "type": "object",
         "properties": {
-          "link_id": {
-            "type": "string"
-          },
-          "link_url": {
-            "type": "string",
-            "examples": [
-              "rqk.sh/k5zvrg"
-            ]
-          }
+          "link_id": { "type": "string" },
+          "link_url": { "type": "string", "examples": ["rqk.sh/k5zvrg"] }
         }
       },
       "LinkStats": {
         "type": "object",
         "properties": {
-          "clicks": {
-            "type": "integer",
-            "description": "Clicks in the requested window."
-          },
-          "uniqueClicks": {
-            "type": "integer",
-            "description": "Distinct visitors in the window."
-          },
-          "totalClicks": {
-            "type": "integer",
-            "description": "All-time clicks."
-          },
+          "clicks": { "type": "integer", "description": "Clicks in the requested window." },
+          "uniqueClicks": { "type": "integer", "description": "Distinct visitors in the window." },
+          "totalClicks": { "type": "integer", "description": "All-time clicks." },
           "averageVisitTime": {
             "type": "number",
             "description": "Average view duration in ms. Null when no duration was recorded — not zero."
@@ -230,380 +105,155 @@
       "Document": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "file": {
-            "type": "string",
-            "description": "Storage key or URL."
-          },
-          "size": {
-            "type": "integer",
-            "description": "Bytes."
-          },
-          "type": {
-            "type": "string"
-          },
-          "workspaceId": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "file": { "type": "string", "description": "Storage key or URL." },
+          "size": { "type": "integer", "description": "Bytes." },
+          "type": { "type": "string" },
+          "workspaceId": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         }
       },
       "Domain": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "slug": {
-            "type": "string",
-            "description": "The domain name itself, e.g. `go.example.com`."
-          },
-          "verified": {
-            "type": "boolean"
-          },
-          "primary": {
-            "type": "boolean"
-          },
-          "target": {
-            "type": "string",
-            "description": "Root redirect destination."
-          },
-          "workspaceId": {
-            "type": "string"
-          },
-          "lastChecked": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string" },
+          "slug": { "type": "string", "description": "The domain name itself, e.g. `go.example.com`." },
+          "verified": { "type": "boolean" },
+          "primary": { "type": "boolean" },
+          "target": { "type": "string", "description": "Root redirect destination." },
+          "workspaceId": { "type": "string" },
+          "lastChecked": { "type": "string", "format": "date-time" },
+          "createdAt": { "type": "string", "format": "date-time" }
         }
       },
       "Workspace": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "slug": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string",
-            "description": "Same as `slug`; retained for backward compatibility."
-          },
-          "logo": {
-            "type": "string"
-          },
-          "plan": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string",
-            "enum": [
-              "OWNER",
-              "ADMIN",
-              "MEMBER"
-            ]
-          },
-          "isArchived": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "url": { "type": "string", "description": "Same as `slug`; retained for backward compatibility." },
+          "logo": { "type": "string" },
+          "plan": { "type": "string" },
+          "role": { "type": "string", "enum": ["OWNER", "ADMIN", "MEMBER"] },
+          "isArchived": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" }
         }
       },
       "Member": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string",
-            "enum": [
-              "OWNER",
-              "ADMIN",
-              "MEMBER"
-            ]
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ACCEPTED",
-              "PENDING"
-            ]
-          },
-          "userId": {
-            "type": "string"
-          },
-          "workspaceId": {
-            "type": "string"
-          }
+          "id": { "type": "string" },
+          "email": { "type": "string" },
+          "role": { "type": "string", "enum": ["OWNER", "ADMIN", "MEMBER"] },
+          "status": { "type": "string", "enum": ["ACCEPTED", "PENDING"] },
+          "userId": { "type": "string" },
+          "workspaceId": { "type": "string" }
         }
       },
       "Qrcode": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "linkId": {
-            "type": "string"
-          },
-          "workspaceId": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "linkId": { "type": "string" },
+          "workspaceId": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
         }
       },
       "QrcodeCreated": {
         "type": "object",
         "properties": {
-          "qrcode_id": {
-            "type": "string"
-          },
-          "link_id": {
-            "type": "string"
-          },
-          "link_url": {
-            "type": "string"
-          }
+          "qrcode_id": { "type": "string" },
+          "link_id": { "type": "string" },
+          "link_url": { "type": "string" }
         }
       },
       "Subscription": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
+          "id": { "type": "string" },
           "plan": {
             "type": "string",
-            "enum": [
-              "FREE",
-              "STARTER",
-              "PRO",
-              "LEGACY_PRO",
-              "BUSINESS",
-              "ENTERPRISE",
-              "LAUNCH_PASS"
-            ]
+            "enum": ["FREE", "STARTER", "PRO", "LEGACY_PRO", "BUSINESS", "ENTERPRISE", "LAUNCH_PASS"]
           },
-          "amount": {
-            "type": "number",
-            "description": "In dollars."
-          },
-          "interval": {
-            "type": "string",
-            "enum": [
-              "month",
-              "year"
-            ]
-          },
-          "isPaid": {
-            "type": "boolean"
-          },
-          "isPaymentFailed": {
-            "type": "boolean"
-          },
-          "isCanceledAtPeriodEnd": {
-            "type": "boolean"
-          },
-          "periodEnd": {
-            "type": "string",
-            "format": "date-time"
-          },
+          "amount": { "type": "number", "description": "In dollars." },
+          "interval": { "type": "string", "enum": ["month", "year"] },
+          "isPaid": { "type": "boolean" },
+          "isPaymentFailed": { "type": "boolean" },
+          "isCanceledAtPeriodEnd": { "type": "boolean" },
+          "periodEnd": { "type": "string", "format": "date-time" },
           "trialEndsAt": {
             "type": "string",
             "format": "date-time",
             "description": "Null means no trial clock — the account does not expire."
           },
-          "isTrial": {
-            "type": "boolean"
-          },
-          "isTrialActive": {
-            "type": "boolean"
-          },
-          "isTrialExpired": {
-            "type": "boolean"
-          },
-          "trialDaysRemaining": {
-            "type": "integer"
-          },
-          "shortLinksLimit": {
-            "type": "integer"
-          },
-          "qrCodeLinksLimit": {
-            "type": "integer"
-          },
-          "clicksLimit": {
-            "type": "integer"
-          },
-          "domainsLimit": {
-            "type": "integer"
-          },
-          "usersLimit": {
-            "type": "integer"
-          },
-          "projectsLimit": {
-            "type": "integer"
-          },
-          "stockableLimit": {
-            "type": "integer"
-          },
-          "filesLimit": {
-            "type": "integer"
-          },
-          "retentionLimit": {
-            "type": "string"
-          }
+          "isTrial": { "type": "boolean" },
+          "isTrialActive": { "type": "boolean" },
+          "isTrialExpired": { "type": "boolean" },
+          "trialDaysRemaining": { "type": "integer" },
+          "shortLinksLimit": { "type": "integer" },
+          "qrCodeLinksLimit": { "type": "integer" },
+          "clicksLimit": { "type": "integer" },
+          "domainsLimit": { "type": "integer" },
+          "usersLimit": { "type": "integer" },
+          "projectsLimit": { "type": "integer" },
+          "stockableLimit": { "type": "integer" },
+          "filesLimit": { "type": "integer" },
+          "retentionLimit": { "type": "string" }
         }
       },
       "Usage": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "plan": {
-            "type": "string"
-          },
-          "isPaid": {
-            "type": "boolean"
-          },
-          "shortLinksUsage": {
-            "type": "integer"
-          },
-          "shortLinksLimit": {
-            "type": "integer"
-          },
-          "qrCodeLinksUsage": {
-            "type": "integer"
-          },
-          "qrCodeLinksLimit": {
-            "type": "integer"
-          },
-          "clicksUsage": {
-            "type": "integer",
-            "description": "Null when the analytics store is unavailable."
-          },
-          "clicksLimit": {
-            "type": "integer"
-          },
-          "domainsUsage": {
-            "type": "integer"
-          },
-          "domainsLimit": {
-            "type": "integer"
-          },
-          "seatsUsage": {
-            "type": "integer"
-          },
-          "usersLimit": {
-            "type": "integer"
-          },
-          "projectUsage": {
-            "type": "integer"
-          },
-          "projectsLimit": {
-            "type": "integer"
-          },
-          "storageUsage": {
-            "type": "integer",
-            "description": "Bytes."
-          },
-          "filesUsage": {
-            "type": "integer"
-          },
-          "filesLimit": {
-            "type": "integer"
-          },
-          "retentionLimit": {
-            "type": "string"
-          }
+          "id": { "type": "string" },
+          "plan": { "type": "string" },
+          "isPaid": { "type": "boolean" },
+          "shortLinksUsage": { "type": "integer" },
+          "shortLinksLimit": { "type": "integer" },
+          "qrCodeLinksUsage": { "type": "integer" },
+          "qrCodeLinksLimit": { "type": "integer" },
+          "clicksUsage": { "type": "integer", "description": "Null when the analytics store is unavailable." },
+          "clicksLimit": { "type": "integer" },
+          "domainsUsage": { "type": "integer" },
+          "domainsLimit": { "type": "integer" },
+          "seatsUsage": { "type": "integer" },
+          "usersLimit": { "type": "integer" },
+          "projectUsage": { "type": "integer" },
+          "projectsLimit": { "type": "integer" },
+          "storageUsage": { "type": "integer", "description": "Bytes." },
+          "filesUsage": { "type": "integer" },
+          "filesLimit": { "type": "integer" },
+          "retentionLimit": { "type": "string" }
         }
       },
       "User": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "image": {
-            "type": "string"
-          },
-          "subscription": {
-            "$ref": "#/components/schemas/Subscription"
-          }
+          "id": { "type": "string" },
+          "email": { "type": "string" },
+          "name": { "type": "string" },
+          "lastName": { "type": "string" },
+          "image": { "type": "string" },
+          "subscription": { "$ref": "#/components/schemas/Subscription" }
         }
       },
       "GeoStats": {
         "type": "object",
         "properties": {
-          "total_views": {
-            "type": "integer"
-          },
+          "total_views": { "type": "integer" },
           "list": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "label": {
-                  "type": "string",
-                  "description": "Resolved display name, e.g. `France`."
-                },
-                "shortCode": {
-                  "type": "string",
-                  "description": "ISO alpha-2 country code."
-                },
-                "country": {
-                  "type": "string",
-                  "description": "Present for region and city selectors."
-                },
-                "total_views": {
-                  "type": "integer"
-                },
-                "new_views": {
-                  "type": "integer",
-                  "description": "Distinct visitors."
-                }
+                "label": { "type": "string", "description": "Resolved display name, e.g. `France`." },
+                "shortCode": { "type": "string", "description": "ISO alpha-2 country code." },
+                "country": { "type": "string", "description": "Present for region and city selectors." },
+                "total_views": { "type": "integer" },
+                "new_views": { "type": "integer", "description": "Distinct visitors." }
               }
             }
           }
@@ -616,36 +266,26 @@
         "in": "path",
         "required": true,
         "description": "Workspace slug.",
-        "schema": {
-          "type": "string"
-        }
+        "schema": { "type": "string" }
       },
       "StartDate": {
         "name": "startDate",
         "in": "query",
         "description": "ISO date. Defaults to 30 days ago.",
-        "schema": {
-          "type": "string",
-          "format": "date"
-        }
+        "schema": { "type": "string", "format": "date" }
       },
       "EndDate": {
         "name": "endDate",
         "in": "query",
         "description": "ISO date. Defaults to today. The window is half-open: the end day is included.",
-        "schema": {
-          "type": "string",
-          "format": "date"
-        }
+        "schema": { "type": "string", "format": "date" }
       }
     }
   },
   "paths": {
     "/links/new/{workspace}": {
       "post": {
-        "tags": [
-          "Links"
-        ],
+        "tags": ["Links"],
         "summary": "Create a link",
         "operationId": "createLink",
         "parameters": [
@@ -654,18 +294,14 @@
             "in": "path",
             "required": true,
             "description": "Workspace slug.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           },
           {
             "name": "subscriptionId",
             "in": "query",
             "required": true,
             "description": "Subscription ID that owns the workspace. Available from `GET /subscriptions`.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "requestBody": {
@@ -675,64 +311,24 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "url": {
-                    "type": "string",
-                    "description": "Destination URL."
-                  },
-                  "domain": {
-                    "type": "string",
-                    "default": "rqk.sh"
-                  },
-                  "key": {
-                    "type": "string",
-                    "description": "Custom short key. Generated when omitted."
-                  },
-                  "title": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "image": {
-                    "type": "string"
-                  },
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Social card image."
-                  },
-                  "expiresAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "ios": {
-                    "type": "string"
-                  },
-                  "android": {
-                    "type": "string"
-                  },
-                  "utm_source": {
-                    "type": "string"
-                  },
-                  "utm_medium": {
-                    "type": "string"
-                  },
-                  "utm_campaign": {
-                    "type": "string"
-                  },
-                  "utm_term": {
-                    "type": "string"
-                  },
-                  "utm_content": {
-                    "type": "string"
-                  }
+                  "url": { "type": "string", "description": "Destination URL." },
+                  "domain": { "type": "string", "default": "rqk.sh" },
+                  "key": { "type": "string", "description": "Custom short key. Generated when omitted." },
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "image": { "type": "string" },
+                  "file": { "type": "string", "format": "binary", "description": "Social card image." },
+                  "expiresAt": { "type": "string", "format": "date-time" },
+                  "password": { "type": "string" },
+                  "ios": { "type": "string" },
+                  "android": { "type": "string" },
+                  "utm_source": { "type": "string" },
+                  "utm_medium": { "type": "string" },
+                  "utm_campaign": { "type": "string" },
+                  "utm_term": { "type": "string" },
+                  "utm_content": { "type": "string" }
                 },
-                "required": [
-                  "url"
-                ]
+                "required": ["url"]
               }
             }
           }
@@ -740,125 +336,58 @@
         "responses": {
           "200": {
             "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LinkCreated"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LinkCreated" } } }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
           "403": {
             "description": "No access to this workspace, or a plan limit has been reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
           },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          }
+          "500": { "$ref": "#/components/responses/ServerError" }
         }
       }
     },
     "/links/{id}": {
       "get": {
-        "tags": [
-          "Links"
-        ],
+        "tags": ["Links"],
         "summary": "Retrieve a link",
         "operationId": "getLink",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Link"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Link" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       },
       "delete": {
-        "tags": [
-          "Links"
-        ],
+        "tags": ["Links"],
         "summary": "Delete a link",
         "description": "Soft delete. The link stops resolving but the record and its analytics are retained.",
         "operationId": "deleteLink",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": {
           "200": {
             "description": "Deleted",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
+                "schema": { "type": "object", "properties": { "message": { "type": "string" } } }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/links/update": {
       "put": {
-        "tags": [
-          "Links"
-        ],
+        "tags": ["Links"],
         "summary": "Update a link",
         "operationId": "updateLink",
         "requestBody": {
@@ -868,46 +397,19 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "string"
-                  },
-                  "url": {
-                    "type": "string"
-                  },
-                  "key": {
-                    "type": "string"
-                  },
-                  "domain": {
-                    "type": "string"
-                  },
-                  "title": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "image": {
-                    "type": "string"
-                  },
-                  "expiresAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "ios": {
-                    "type": "string",
-                    "description": "Send an empty string to clear."
-                  },
-                  "android": {
-                    "type": "string",
-                    "description": "Send an empty string to clear."
-                  }
+                  "id": { "type": "string" },
+                  "url": { "type": "string" },
+                  "key": { "type": "string" },
+                  "domain": { "type": "string" },
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "image": { "type": "string" },
+                  "expiresAt": { "type": "string", "format": "date-time" },
+                  "password": { "type": "string" },
+                  "ios": { "type": "string", "description": "Send an empty string to clear." },
+                  "android": { "type": "string", "description": "Send an empty string to clear." }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -915,47 +417,22 @@
         "responses": {
           "200": {
             "description": "Updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Link"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Link" } } }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/links/{id}/status": {
       "put": {
-        "tags": [
-          "Links"
-        ],
+        "tags": ["Links"],
         "summary": "Update link status",
         "description": "Activate, deactivate or archive a link.",
         "operationId": "updateLinkStatus",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
           "required": true,
           "content": {
@@ -963,12 +440,8 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "isActive": {
-                    "type": "boolean"
-                  },
-                  "isArchived": {
-                    "type": "boolean"
-                  }
+                  "isActive": { "type": "boolean" },
+                  "isArchived": { "type": "boolean" }
                 }
               }
             }
@@ -977,77 +450,38 @@
         "responses": {
           "200": {
             "description": "Updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Link"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Link" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/links/{id}/stats": {
       "get": {
-        "tags": [
-          "Links"
-        ],
+        "tags": ["Links"],
         "summary": "Retrieve link analytics",
         "operationId": "getLinkStats",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/StartDate"
-          },
-          {
-            "$ref": "#/components/parameters/EndDate"
-          }
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "$ref": "#/components/parameters/StartDate" },
+          { "$ref": "#/components/parameters/EndDate" }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LinkStats"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LinkStats" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/links/document": {
       "post": {
-        "tags": [
-          "Links"
-        ],
+        "tags": ["Links"],
         "summary": "Create a link for a document",
         "description": "Creates an additional short link pointing at an existing uploaded file.",
         "operationId": "createDocumentLink",
@@ -1058,22 +492,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "documentId": {
-                    "type": "string"
-                  },
-                  "workspaceId": {
-                    "type": "string"
-                  },
-                  "key": {
-                    "type": "string"
-                  },
-                  "domain": {
-                    "type": "string"
-                  }
+                  "documentId": { "type": "string" },
+                  "workspaceId": { "type": "string" },
+                  "key": { "type": "string" },
+                  "domain": { "type": "string" }
                 },
-                "required": [
-                  "documentId"
-                ]
+                "required": ["documentId"]
               }
             }
           }
@@ -1081,31 +505,17 @@
         "responses": {
           "201": {
             "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Link"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Link" } } }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
         }
       }
     },
     "/links/random": {
       "get": {
-        "tags": [
-          "Links"
-        ],
+        "tags": ["Links"],
         "summary": "Generate an unused short key",
         "description": "Returns a random 6-character key that is not yet taken on the given domain.",
         "operationId": "getRandomKey",
@@ -1114,43 +524,24 @@
             "name": "domain",
             "in": "query",
             "description": "Defaults to `rqk.sh`.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
           "200": {
             "description": "A short key",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "examples": [
-                    "k5zvrg"
-                  ]
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "type": "string", "examples": ["k5zvrg"] } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" }
         }
       }
     },
     "/qrcodes/{url}": {
       "post": {
-        "tags": [
-          "QR Codes"
-        ],
+        "tags": ["QR Codes"],
         "summary": "Create a QR code",
         "operationId": "createQrcode",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
         "requestBody": {
           "required": true,
           "content": {
@@ -1158,32 +549,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "url": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "domain": {
-                    "type": "string"
-                  },
-                  "key": {
-                    "type": "string"
-                  },
-                  "bgColor": {
-                    "type": "string"
-                  },
-                  "fgColor": {
-                    "type": "string"
-                  },
-                  "logo": {
-                    "type": "string",
-                    "format": "binary"
-                  }
+                  "url": { "type": "string" },
+                  "name": { "type": "string" },
+                  "domain": { "type": "string" },
+                  "key": { "type": "string" },
+                  "bgColor": { "type": "string" },
+                  "fgColor": { "type": "string" },
+                  "logo": { "type": "string", "format": "binary" }
                 },
-                "required": [
-                  "url"
-                ]
+                "required": ["url"]
               }
             }
           }
@@ -1191,31 +565,17 @@
         "responses": {
           "200": {
             "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QrcodeCreated"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/QrcodeCreated" } } }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
         }
       }
     },
     "/documents": {
       "get": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Retrieve documents",
         "operationId": "listDocuments",
         "parameters": [
@@ -1224,9 +584,7 @@
             "in": "query",
             "required": true,
             "description": "Workspace slug. `workspaceId` is accepted as an alternative.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
@@ -1234,40 +592,23 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Document"
-                  }
-                }
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Document" } }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "422": {
-            "description": "Missing `project` or `workspaceId`"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "422": { "description": "Missing `project` or `workspaceId`" }
         }
       }
     },
     "/documents/{url}": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Create a document",
         "description": "Uploads a file and creates a file-to-link document in the workspace.",
         "operationId": "createDocument",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
         "requestBody": {
           "required": true,
           "content": {
@@ -1275,17 +616,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "name": {
-                    "type": "string"
-                  }
+                  "file": { "type": "string", "format": "binary" },
+                  "name": { "type": "string" }
                 },
-                "required": [
-                  "file"
-                ]
+                "required": ["file"]
               }
             }
           }
@@ -1293,81 +627,35 @@
         "responses": {
           "200": {
             "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Document"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Document" } } }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
         }
       }
     },
     "/documents/{id}": {
       "get": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Retrieve a document",
         "operationId": "getDocument",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Document"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Document" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       },
       "put": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Update a document",
         "operationId": "updateDocument",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
           "required": true,
           "content": {
@@ -1375,13 +663,8 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
+                  "name": { "type": "string" },
+                  "file": { "type": "string", "format": "binary" }
                 }
               }
             }
@@ -1390,123 +673,57 @@
         "responses": {
           "200": {
             "description": "Updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Document"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Document" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       },
       "delete": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Delete a document",
         "description": "Also soft-deletes every link pointing at the file.",
         "operationId": "deleteDocument",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": {
-          "200": {
-            "description": "Deleted"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": { "description": "Deleted" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/documents/{id}/links": {
       "get": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Retrieve document links",
         "operationId": "getDocumentLinks",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Link"
-                  }
-                }
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Link" } }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/documents/{id}/stats": {
       "get": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Retrieve document analytics",
         "operationId": "getDocumentStats",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/StartDate"
-          },
-          {
-            "$ref": "#/components/parameters/EndDate"
-          }
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "$ref": "#/components/parameters/StartDate" },
+          { "$ref": "#/components/parameters/EndDate" }
         ],
         "responses": {
           "200": {
@@ -1516,37 +733,23 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "totalClicks": {
-                      "type": "integer"
-                    },
-                    "uniqueVisitorCount": {
-                      "type": "integer"
-                    },
-                    "averageVisitTime": {
-                      "type": "number"
-                    }
+                    "totalClicks": { "type": "integer" },
+                    "uniqueVisitorCount": { "type": "integer" },
+                    "averageVisitTime": { "type": "number" }
                   }
                 }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/domains/{slug}": {
       "get": {
-        "tags": [
-          "Domains"
-        ],
+        "tags": ["Domains"],
         "summary": "Retrieve domains",
         "description": "Lists custom domains for a workspace. Here `slug` is the **workspace** slug.",
         "operationId": "listDomains",
@@ -1556,9 +759,7 @@
             "in": "path",
             "required": true,
             "description": "Workspace slug.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
@@ -1566,30 +767,17 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Domain"
-                  }
-                }
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Domain" } }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       },
       "post": {
-        "tags": [
-          "Domains"
-        ],
+        "tags": ["Domains"],
         "summary": "Create a domain",
         "description": "Adds a custom domain to a workspace. Here `slug` is the **workspace** slug; the domain name goes in the body.",
         "operationId": "createDomain",
@@ -1599,9 +787,7 @@
             "in": "path",
             "required": true,
             "description": "Workspace slug.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "requestBody": {
@@ -1611,18 +797,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "slug": {
-                    "type": "string",
-                    "description": "The domain name, e.g. `go.example.com`."
-                  },
-                  "target": {
-                    "type": "string",
-                    "description": "Optional root redirect destination."
-                  }
+                  "slug": { "type": "string", "description": "The domain name, e.g. `go.example.com`." },
+                  "target": { "type": "string", "description": "Optional root redirect destination." }
                 },
-                "required": [
-                  "slug"
-                ]
+                "required": ["slug"]
               }
             }
           }
@@ -1630,29 +808,15 @@
         "responses": {
           "200": {
             "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Domain"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Domain" } } }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
         }
       },
       "delete": {
-        "tags": [
-          "Domains"
-        ],
+        "tags": ["Domains"],
         "summary": "Delete a domain",
         "description": "Removes a custom domain. Here `slug` is the **domain** name, not the workspace. Requires OWNER or ADMIN.",
         "operationId": "deleteDomain",
@@ -1662,32 +826,20 @@
             "in": "path",
             "required": true,
             "description": "Domain name, e.g. `go.example.com`.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Deleted"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "description": "OWNER or ADMIN role required, or key scoped to another workspace"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": { "description": "Deleted" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "description": "OWNER or ADMIN role required, or key scoped to another workspace" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/domains/{slug}/status": {
       "get": {
-        "tags": [
-          "Domains"
-        ],
+        "tags": ["Domains"],
         "summary": "Verify domain status",
         "description": "Checks DNS and TLS provisioning for a custom domain.",
         "operationId": "getDomainStatus",
@@ -1697,9 +849,7 @@
             "in": "path",
             "required": true,
             "description": "Domain name.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
@@ -1710,38 +860,23 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "verified": {
-                      "type": "boolean"
-                    },
-                    "status": {
-                      "type": "string"
-                    },
-                    "lastChecked": {
-                      "type": "string",
-                      "format": "date-time"
-                    }
+                    "verified": { "type": "boolean" },
+                    "status": { "type": "string" },
+                    "lastChecked": { "type": "string", "format": "date-time" }
                   }
                 }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/domains/{slug}/redirect": {
       "post": {
-        "tags": [
-          "Domains"
-        ],
+        "tags": ["Domains"],
         "summary": "Set domain root redirect",
         "description": "Sets where the domain's root URL sends visitors.",
         "operationId": "setDomainRedirect",
@@ -1751,9 +886,7 @@
             "in": "path",
             "required": true,
             "description": "Domain name.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "requestBody": {
@@ -1762,82 +895,42 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "target": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "target"
-                ]
+                "properties": { "target": { "type": "string" } },
+                "required": ["target"]
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Updated"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": { "description": "Updated" },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/workspaces/{url}": {
       "get": {
-        "tags": [
-          "Workspaces"
-        ],
+        "tags": ["Workspaces"],
         "summary": "Retrieve a workspace",
         "operationId": "getWorkspace",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Workspace"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Workspace" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       },
       "put": {
-        "tags": [
-          "Workspaces"
-        ],
+        "tags": ["Workspaces"],
         "summary": "Update a workspace",
         "operationId": "updateWorkspace",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
         "requestBody": {
           "required": true,
           "content": {
@@ -1845,12 +938,8 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "slug": {
-                    "type": "string"
-                  }
+                  "name": { "type": "string" },
+                  "slug": { "type": "string" }
                 }
               }
             }
@@ -1859,87 +948,37 @@
         "responses": {
           "200": {
             "description": "Updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Workspace"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Workspace" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       },
       "delete": {
-        "tags": [
-          "Workspaces"
-        ],
+        "tags": ["Workspaces"],
         "summary": "Delete a workspace",
         "description": "Requires the OWNER role.",
         "operationId": "deleteWorkspace",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
         "responses": {
-          "200": {
-            "description": "Deleted"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "description": "OWNER role required, or key scoped to another workspace"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": { "description": "Deleted" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "description": "OWNER role required, or key scoped to another workspace" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/workspaces/{url}/links": {
       "get": {
-        "tags": [
-          "Workspaces"
-        ],
+        "tags": ["Workspaces"],
         "summary": "Retrieve workspace links",
         "operationId": "listWorkspaceLinks",
         "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 20
-            }
-          },
-          {
-            "name": "search",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
+          { "$ref": "#/components/parameters/WorkspaceSlug" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } },
+          { "name": "search", "in": "query", "schema": { "type": "string" } }
         ],
         "responses": {
           "200": {
@@ -1949,65 +988,30 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "links": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Link"
-                      }
-                    },
-                    "total": {
-                      "type": "integer"
-                    },
-                    "page": {
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "type": "integer"
-                    }
+                    "links": { "type": "array", "items": { "$ref": "#/components/schemas/Link" } },
+                    "total": { "type": "integer" },
+                    "page": { "type": "integer" },
+                    "limit": { "type": "integer" }
                   }
                 }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/workspaces/{url}/qrcodes": {
       "get": {
-        "tags": [
-          "Workspaces"
-        ],
+        "tags": ["Workspaces"],
         "summary": "Retrieve QR codes",
         "operationId": "listWorkspaceQrcodes",
         "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 20
-            }
-          }
+          { "$ref": "#/components/parameters/WorkspaceSlug" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
         ],
         "responses": {
           "200": {
@@ -2017,103 +1021,56 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "qrcodes": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Qrcode"
-                      }
-                    },
-                    "total": {
-                      "type": "integer"
-                    },
-                    "page": {
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "type": "integer"
-                    }
+                    "qrcodes": { "type": "array", "items": { "$ref": "#/components/schemas/Qrcode" } },
+                    "total": { "type": "integer" },
+                    "page": { "type": "integer" },
+                    "limit": { "type": "integer" }
                   }
                 }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/workspaces/{url}/members": {
       "get": {
-        "tags": [
-          "Workspaces"
-        ],
+        "tags": ["Workspaces"],
         "summary": "Retrieve workspace members",
         "operationId": "listWorkspaceMembers",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Member"
-                  }
-                }
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Member" } }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/workspaces/{url}/logo": {
       "put": {
-        "tags": [
-          "Workspaces"
-        ],
+        "tags": ["Workspaces"],
         "summary": "Update workspace logo",
         "operationId": "updateWorkspaceLogo",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
         "requestBody": {
           "required": true,
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                },
-                "required": [
-                  "file"
-                ]
+                "properties": { "file": { "type": "string", "format": "binary" } },
+                "required": ["file"]
               }
             }
           }
@@ -2123,41 +1080,22 @@
             "description": "Uploaded",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string"
-                    }
-                  }
-                }
+                "schema": { "type": "object", "properties": { "url": { "type": "string" } } }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
         }
       }
     },
     "/workspaces/{url}/analytics/clicks": {
       "get": {
-        "tags": [
-          "Workspaces"
-        ],
+        "tags": ["Workspaces"],
         "summary": "Retrieve click totals",
         "operationId": "getWorkspaceClicks",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
         "responses": {
           "200": {
             "description": "OK",
@@ -2165,104 +1103,55 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "totalClicks": {
-                      "type": "integer"
-                    }
-                  }
+                  "properties": { "totalClicks": { "type": "integer" } }
                 }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/workspaces/{url}/analytics/stats": {
       "get": {
-        "tags": [
-          "Workspaces"
-        ],
+        "tags": ["Workspaces"],
         "summary": "Retrieve geographic analytics",
         "description": "Country, region or city breakdown. Optionally scoped to a single link or document.",
         "operationId": "getWorkspaceGeoStats",
         "parameters": [
-          {
-            "$ref": "#/components/parameters/WorkspaceSlug"
-          },
-          {
-            "$ref": "#/components/parameters/StartDate"
-          },
-          {
-            "$ref": "#/components/parameters/EndDate"
-          },
+          { "$ref": "#/components/parameters/WorkspaceSlug" },
+          { "$ref": "#/components/parameters/StartDate" },
+          { "$ref": "#/components/parameters/EndDate" },
           {
             "name": "selector",
             "in": "query",
             "description": "Breakdown dimension.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "country",
-                "region",
-                "city"
-              ],
-              "default": "country"
-            }
+            "schema": { "type": "string", "enum": ["country", "region", "city"], "default": "country" }
           },
-          {
-            "name": "linkId",
-            "in": "query",
-            "description": "Scope to one link.",
-            "schema": {
-              "type": "string"
-            }
-          },
+          { "name": "linkId", "in": "query", "description": "Scope to one link.", "schema": { "type": "string" } },
           {
             "name": "documentId",
             "in": "query",
             "description": "Scope to one document's links.",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GeoStats"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GeoStats" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/users/me": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Retrieve the authenticated user",
         "operationId": "getCurrentUser",
         "responses": {
@@ -2272,77 +1161,45 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/User"
-                    }
-                  }
+                  "properties": { "user": { "$ref": "#/components/schemas/User" } }
                 }
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
     },
     "/users/usage": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Retrieve usage",
         "description": "Usage and limits for the current billing period.",
         "operationId": "getUsage",
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Usage"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Usage" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "description": "No subscription"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "description": "No subscription" }
         }
       }
     },
     "/subscriptions": {
       "get": {
-        "tags": [
-          "Subscriptions"
-        ],
+        "tags": ["Subscriptions"],
         "summary": "Retrieve subscription",
         "description": "Plan, billing state and effective limits for the authenticated user.",
         "operationId": "getSubscription",
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Subscription"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Subscription" } } }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          }
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "500": { "$ref": "#/components/responses/ServerError" }
         }
       }
     }
