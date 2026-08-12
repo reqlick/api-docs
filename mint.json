@@ -119,9 +119,7 @@
       "group": "Users",
       "pages": [
         "api-reference/endpoint/users/get/me/index",
-        "api-reference/endpoint/users/get/usage/index",
-        "api-reference/endpoint/users/put/update-user-info/index",
-        "api-reference/endpoint/users/put/update-user-picture/index"
+        "api-reference/endpoint/users/get/usage/index"
       ]
     }
   ],
