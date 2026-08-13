@@ -1,0 +1,69 @@
+---
+title: "Create links in bulk"
+openapi: "POST /workspaces/{url}/links/bulk-create"
+description: Create up to 100 links or QR codes in one request.
+---
+
+Partial success is the normal outcome, so the response lists what was created
+and what was not, with a reason against each URL. It is not an all-or-nothing
+request: a batch where three URLs are malformed still creates the rest.
+
+## Rows
+
+`rows` accepts three shapes, so the same endpoint serves a pasted list, a CSV
+import and a script that already holds the data:
+
+```json
+{ "rows": "https://a.example\nhttps://b.example" }
+{ "rows": ["https://a.example", "https://b.example"] }
+{ "rows": [{ "url": "https://a.example", "key": "spring", "title": "Spring", "tag": "Campaigns" }] }
+```
+
+`key` is honoured when free. A taken key fails **that row by name** rather than
+being replaced with a generated one — the reason to import keys is that old
+addresses keep working, so silently changing one would defeat the point. `tag`
+is matched against the workspace's tags by name; an unknown name is ignored.
+
+Rows are de-duplicated on destination **and** key, not destination alone: a
+migration legitimately points several short keys at one page.
+
+## QR codes
+
+Send `qr` to create QR codes instead of links. One style applies to the whole
+batch:
+
+```json
+{ "rows": ["https://a.example"], "qr": { "fgColor": "#000000", "size": 300 } }
+```
+
+## Example
+
+```bash
+curl -X POST https://api.reqlick.com/workspaces/acme/links/bulk-create \
+  -H "Authorization: Bearer rqk_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "domain": "rqk.sh",
+    "rows": [
+      { "url": "https://example.com/spring", "key": "spring25" },
+      { "url": "https://example.com/pricing" }
+    ]
+  }'
+```
+
+```json
+{
+  "requested": 2,
+  "created": [
+    { "url": "https://example.com/spring", "linkId": "lnk_1", "shortUrl": "rqk.sh/spring25" },
+    { "url": "https://example.com/pricing", "linkId": "lnk_2", "shortUrl": "rqk.sh/Xk29fQa" }
+  ],
+  "failed": []
+}
+```
+
+<Note>
+  The plan limit is checked once for the batch. Rows beyond what the plan allows
+  are reported as failures with the limit named, rather than the request failing
+  partway through with a limit error you cannot attribute to a row.
+</Note>

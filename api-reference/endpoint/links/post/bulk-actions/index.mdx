@@ -1,0 +1,25 @@
+---
+title: "Archive, restore or delete links in bulk"
+openapi: "POST /workspaces/{url}/links/bulk"
+description: Apply one action to up to 100 links.
+---
+
+Each id is reported individually. An id that does not belong to the workspace,
+or that the action cannot apply to, fails on its own and the rest still run.
+
+```bash
+curl -X POST https://api.reqlick.com/workspaces/acme/links/bulk \
+  -H "Authorization: Bearer rqk_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{ "action": "archive", "ids": ["lnk_1", "lnk_2"] }'
+```
+
+```json
+{ "succeeded": ["lnk_1"], "failed": [{ "id": "lnk_2", "reason": "Not found in this workspace" }] }
+```
+
+<Warning>
+  `delete` is permanent and does not free a slot against your plan — the usage
+  that has already been recorded stays recorded. `archive` is the reversible
+  one, and what the dashboard's Delete does.
+</Warning>

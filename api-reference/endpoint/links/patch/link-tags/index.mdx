@@ -1,0 +1,24 @@
+---
+title: "Set a link's tags"
+openapi: "PATCH /workspaces/{url}/links/{linkId}/tag"
+description: Replace the tags on a link.
+---
+
+Replaces the whole set: send every tag the link should end up with. An empty
+array removes them all.
+
+```bash
+curl -X PATCH https://api.reqlick.com/workspaces/acme/links/lnk_1/tag \
+  -H "Authorization: Bearer rqk_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{ "tagIds": ["tag_1", "tag_2"] }'
+```
+
+Every id is checked against the workspace; one from elsewhere is rejected with
+422 rather than silently ignored, since it would label the link with something
+the workspace's members can neither see nor remove.
+
+<Note>
+  A single `tagId` is still accepted for older integrations. It behaves as a
+  one-element `tagIds`.
+</Note>

@@ -40,6 +40,10 @@
     },
     {
       "name": "Subscriptions"
+    },
+    {
+      "name": "Tags",
+      "description": "Labels on links, QR codes and file links."
     }
   ],
   "components": {
@@ -189,6 +193,13 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            },
+            "description": "Every tag on the link. `tag` is the single-tag field this replaced and is still returned."
           }
         }
       },
@@ -608,6 +619,55 @@
             }
           }
         }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string",
+            "description": "Hex colour, e.g. `#2563eb`."
+          },
+          "_count": {
+            "type": "object",
+            "properties": {
+              "links": {
+                "type": "integer",
+                "description": "Links carrying this tag."
+              }
+            }
+          }
+        }
+      },
+      "BulkResult": {
+        "type": "object",
+        "properties": {
+          "succeeded": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failed": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "parameters": {
@@ -754,6 +814,42 @@
           "type": "string"
         },
         "example": "\u00cele-de-France"
+      },
+      "FilterStatus": {
+        "name": "status",
+        "in": "query",
+        "description": "Statuses, comma-separated \u2014 several mean *either*. `all`, or omitting it, restricts nothing.",
+        "schema": {
+          "type": "string",
+          "example": "active,archived"
+        }
+      },
+      "FilterFileType": {
+        "name": "fileType",
+        "in": "query",
+        "description": "File-type buckets, comma-separated.",
+        "schema": {
+          "type": "string",
+          "example": "pdfs,images"
+        }
+      },
+      "TagId": {
+        "name": "tagId",
+        "in": "path",
+        "required": true,
+        "description": "Tag id.",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "LinkId": {
+        "name": "linkId",
+        "in": "path",
+        "required": true,
+        "description": "Link id.",
+        "schema": {
+          "type": "string"
+        }
       }
     }
   },
@@ -2297,35 +2393,6 @@
             }
           },
           {
-            "name": "status",
-            "in": "query",
-            "description": "Filter by link state. `all` (the default) includes archived links. `active` means live right now \u2014 it excludes anything paused, archived, past its expiry date, or blocked by moderation.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "all",
-                "active",
-                "inactive",
-                "archived"
-              ],
-              "default": "all"
-            }
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "Filter by what the link points at. `file-to-link` returns links backed by an uploaded file.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "all",
-                "links",
-                "file-to-link"
-              ],
-              "default": "all"
-            }
-          },
-          {
             "name": "sort",
             "in": "query",
             "description": "Result order. `most-clicks` ranks by all-time clicks; `name-asc` sorts by title, falling back to the key.",
@@ -2339,6 +2406,21 @@
               ],
               "default": "newest"
             }
+          },
+          {
+            "$ref": "#/components/parameters/FilterStatus"
+          },
+          {
+            "$ref": "#/components/parameters/FilterLinkType"
+          },
+          {
+            "$ref": "#/components/parameters/FilterTag"
+          },
+          {
+            "$ref": "#/components/parameters/FilterDomain"
+          },
+          {
+            "$ref": "#/components/parameters/FilterCreator"
           }
         ],
         "responses": {
@@ -2416,21 +2498,6 @@
             }
           },
           {
-            "name": "status",
-            "in": "query",
-            "description": "Filter by QR code state. `all` (the default) includes archived codes. `active` excludes anything paused, archived, expired, or blocked by moderation.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "all",
-                "active",
-                "inactive",
-                "archived"
-              ],
-              "default": "all"
-            }
-          },
-          {
             "name": "sort",
             "in": "query",
             "description": "Result order. `most-scans` ranks by all-time scans.",
@@ -2444,6 +2511,18 @@
               ],
               "default": "newest"
             }
+          },
+          {
+            "$ref": "#/components/parameters/FilterStatus"
+          },
+          {
+            "$ref": "#/components/parameters/FilterTag"
+          },
+          {
+            "$ref": "#/components/parameters/FilterDomain"
+          },
+          {
+            "$ref": "#/components/parameters/FilterCreator"
           }
         ],
         "responses": {
@@ -2523,36 +2602,6 @@
             }
           },
           {
-            "name": "status",
-            "in": "query",
-            "description": "Filter by whether the file's links are archived.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "all",
-                "active",
-                "archived"
-              ],
-              "default": "all"
-            }
-          },
-          {
-            "name": "fileType",
-            "in": "query",
-            "description": "Filter by file family. Matching is case-insensitive, and `other` covers anything outside the named buckets, including files with no recorded extension.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "all",
-                "images",
-                "pdfs",
-                "documents",
-                "other"
-              ],
-              "default": "all"
-            }
-          },
-          {
             "name": "sort",
             "in": "query",
             "description": "Result order. `most-clicks` ranks by the all-time clicks across a file's links.",
@@ -2567,6 +2616,15 @@
               ],
               "default": "newest"
             }
+          },
+          {
+            "$ref": "#/components/parameters/FilterStatus"
+          },
+          {
+            "$ref": "#/components/parameters/FilterFileType"
+          },
+          {
+            "$ref": "#/components/parameters/FilterCreator"
           }
         ],
         "responses": {
@@ -3023,6 +3081,757 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/workspaces/{url}/links/bulk-create": {
+      "post": {
+        "tags": [
+          "Links"
+        ],
+        "summary": "Create links in bulk",
+        "description": "Create up to 100 links, or QR codes, in one request. Partial success is the normal outcome: the response lists what was created and what was not, with a reason against each URL.",
+        "operationId": "bulkCreateLinks",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "rows"
+                ],
+                "properties": {
+                  "rows": {
+                    "description": "A newline-separated string, an array of URLs, or an array of `{ url, key, title, tag }` objects.",
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string"
+                            },
+                            "key": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "tag": {
+                              "type": "string",
+                              "description": "Tag name, matched case-insensitively."
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "domain": {
+                    "type": "string",
+                    "default": "rqk.sh"
+                  },
+                  "qr": {
+                    "type": "object",
+                    "description": "Present to create QR codes. One style for the whole batch."
+                  },
+                  "tagId": {
+                    "type": "string"
+                  },
+                  "expiresAt": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "utmSource": {
+                    "type": "string"
+                  },
+                  "utmMedium": {
+                    "type": "string"
+                  },
+                  "utmCampaign": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "requested": {
+                      "type": "integer"
+                    },
+                    "created": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "linkId": {
+                            "type": "string"
+                          },
+                          "shortUrl": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "failed": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "BadRequest": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/workspaces/{url}/links/bulk": {
+      "post": {
+        "tags": [
+          "Links"
+        ],
+        "summary": "Archive, restore or delete links in bulk",
+        "description": "One action applied to up to 100 links, reported per id.",
+        "operationId": "bulkLinkAction",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "action",
+                  "ids"
+                ],
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "archive",
+                      "restore",
+                      "activate",
+                      "deactivate",
+                      "delete"
+                    ]
+                  },
+                  "ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "BadRequest": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/workspaces/{url}/documents/bulk-create-links": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Create links from files in bulk",
+        "description": "One link \u2014 or QR code \u2014 per file, for up to 100 files already in the workspace.",
+        "operationId": "bulkCreateDocumentLinks",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "documentIds"
+                ],
+                "properties": {
+                  "documentIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 100
+                  },
+                  "domain": {
+                    "type": "string",
+                    "default": "rqk.sh"
+                  },
+                  "qr": {
+                    "type": "object",
+                    "description": "Present to create QR codes."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "BadRequest": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/workspaces/{url}/documents/bulk": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Archive, restore or delete files in bulk",
+        "description": "One action applied to up to 100 files, reported per id.",
+        "operationId": "bulkDocumentAction",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "action",
+                  "ids"
+                ],
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "archive",
+                      "restore",
+                      "delete"
+                    ]
+                  },
+                  "ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "BadRequest": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/workspaces/{url}/export": {
+      "get": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Export links, QR codes or files",
+        "description": "Everything the filters describe, as CSV \u2014 not a page. Capped at 10,000 rows. Reads the same filter parameters as the matching list endpoint, so \"the current filters\" means one thing rather than two.",
+        "operationId": "exportWorkspaceResource",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          },
+          {
+            "name": "resource",
+            "in": "query",
+            "description": "What to export.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "links",
+                "qrcodes",
+                "documents"
+              ],
+              "default": "links"
+            }
+          },
+          {
+            "name": "columns",
+            "in": "query",
+            "description": "Columns to include, comma-separated. Omitted means the defaults.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Export exactly these ids, ignoring the filters.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/FilterStatus"
+          },
+          {
+            "$ref": "#/components/parameters/FilterLinkType"
+          },
+          {
+            "$ref": "#/components/parameters/FilterFileType"
+          },
+          {
+            "$ref": "#/components/parameters/FilterTag"
+          },
+          {
+            "$ref": "#/components/parameters/FilterDomain"
+          },
+          {
+            "$ref": "#/components/parameters/FilterCreator"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Free-text search.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The CSV. `X-Export-Rows` carries the row count.",
+            "headers": {
+              "X-Export-Rows": {
+                "description": "Rows written.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/workspaces/{url}/tags": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Retrieve tags",
+        "description": "Every tag in the workspace, ordered by name.",
+        "operationId": "listTags",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tag"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Create a tag",
+        "description": "Names are unique per workspace, case-insensitively.",
+        "operationId": "createTag",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 50
+                  },
+                  "color": {
+                    "type": "string",
+                    "description": "Hex colour. Defaults to `blue`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "422": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/workspaces/{url}/tags/{tagId}": {
+      "patch": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Rename or recolour a tag",
+        "description": "At least one of `name` or `color` must be present. A name already used by another tag returns 409.",
+        "operationId": "updateTag",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          },
+          {
+            "$ref": "#/components/parameters/TagId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 50
+                  },
+                  "color": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "422": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Delete a tag",
+        "description": "The links keep working, untagged \u2014 a tag is a label on a link, not a container for it. The response says how many links lost it.",
+        "operationId": "deleteTag",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          },
+          {
+            "$ref": "#/components/parameters/TagId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean"
+                    },
+                    "untagged": {
+                      "type": "integer",
+                      "description": "Links that lost the tag."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/workspaces/{url}/links/{linkId}/tag": {
+      "patch": {
+        "tags": [
+          "Links"
+        ],
+        "summary": "Set a link's tags",
+        "description": "Replaces the whole set \u2014 send every tag the link should end up with. An empty array removes them all. Ids are checked against the workspace; one from elsewhere is rejected rather than ignored.",
+        "operationId": "setLinkTags",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          },
+          {
+            "$ref": "#/components/parameters/LinkId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tagIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "tagId": {
+                    "type": "string",
+                    "description": "Accepted for older integrations; behaves as a one-element `tagIds`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tagIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
                 }
               }
             }
