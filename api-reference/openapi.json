@@ -367,7 +367,7 @@
       "delete": {
         "tags": ["Links"],
         "summary": "Delete a link",
-        "description": "Archives the link. It stops resolving immediately and its analytics are retained.\n\nThe link **still appears in `GET /workspaces/{url}/links`** — the dashboard reads archived links back from there to offer Restore. Pass `?status=active` to that endpoint to exclude them.",
+        "description": "Archives the link — this is reversible and does **not** free a slot against your plan. It stops resolving immediately and its analytics are retained.\n\nThe link **still appears in `GET /workspaces/{url}/links`** — archived links are read back from there to offer Restore. Pass `?status=active` to that endpoint to exclude them, or `POST /links/{id}/restore` to bring one back.\n\nTo remove a link for good, use `DELETE /links/{id}/permanent`.",
         "operationId": "deleteLink",
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": {
@@ -379,6 +379,51 @@
               }
             }
           },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/links/{id}/permanent": {
+      "delete": {
+        "tags": ["Links"],
+        "summary": "Permanently delete a link or QR code",
+        "description": "Removes the link for good. This cannot be undone and the short URL stops resolving immediately.\n\nWorks for QR codes too — a QR code is a link, so the same id space covers both, and its QR image records are removed with it.\n\nClick history is **kept**: analytics for a deleted link remain available for your reports. The slot it occupied stays counted against your plan, so deleting and recreating does not reset a limit.\n\nA link blocked by moderation cannot be permanently deleted and returns `403`; archive it instead.",
+        "operationId": "permanentlyDeleteLink",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Permanently deleted",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object", "properties": { "message": { "type": "string" } } }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/links/{id}/restore": {
+      "post": {
+        "tags": ["Links"],
+        "summary": "Restore an archived link",
+        "description": "Brings an archived link back. It returns **deactivated**, so it does not start resolving again until you activate it with `PUT /links/{id}/status`.\n\nReturns `400` if the link is not archived, and `409` if it points at a file that has since been permanently deleted.",
+        "operationId": "restoreLink",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Restored",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object", "properties": { "message": { "type": "string" } } }
+              }
+            }
+          },
+          "400": { "description": "The link is not archived" },
           "401": { "$ref": "#/components/responses/Unauthorized" },
           "403": { "$ref": "#/components/responses/Forbidden" },
           "404": { "$ref": "#/components/responses/NotFound" }
@@ -704,7 +749,7 @@
       "delete": {
         "tags": ["Documents"],
         "summary": "Delete a document",
-        "description": "Also soft-deletes every link pointing at the file.",
+        "description": "Permanently deletes the file. This cannot be undone.\n\nThe stored object is removed from storage, the freed space is returned to your quota, and **every link pointing at the file is deleted with it** — those short URLs stop resolving. Click history is kept for your reports, and the file slot stays counted against your plan.\n\nTo stop sharing a file without destroying it, use `POST /documents/{id}/archive` instead.",
         "operationId": "deleteDocument",
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": {
@@ -730,6 +775,58 @@
               }
             }
           },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/documents/{id}/archive": {
+      "post": {
+        "tags": ["Documents"],
+        "summary": "Archive a file",
+        "description": "Stops the file being shared, reversibly. Every link pointing at it is archived and stops resolving; the file stays in storage and continues to count toward your storage quota.\n\nA file has no archived flag of its own — it counts as archived when every link pointing at it is. Returns `400` for a file with no links, since there is nothing to archive.\n\nUse `GET /workspaces/{url}/documents?status=archived` to list them, and `POST /documents/{id}/restore` to undo.",
+        "operationId": "archiveDocument",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Archived",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" }, "linksArchived": { "type": "integer" } }
+                }
+              }
+            }
+          },
+          "400": { "description": "The file has no links to archive" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/documents/{id}/restore": {
+      "post": {
+        "tags": ["Documents"],
+        "summary": "Restore an archived file",
+        "description": "Un-archives every archived link pointing at the file. They return **deactivated**, so nothing resolves again until you activate each one with `PUT /links/{id}/status`.\n\nThis restores all of the file's archived links, including any you archived individually. Returns `400` if the file is not archived.",
+        "operationId": "restoreDocument",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Restored",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" }, "linksRestored": { "type": "integer" } }
+                }
+              }
+            }
+          },
+          "400": { "description": "The file is not archived" },
           "401": { "$ref": "#/components/responses/Unauthorized" },
           "403": { "$ref": "#/components/responses/Forbidden" },
           "404": { "$ref": "#/components/responses/NotFound" }
@@ -994,7 +1091,7 @@
       "get": {
         "tags": ["Workspaces"],
         "summary": "Retrieve workspace links",
-        "description": "By default this includes archived links, because deleting a link archives it rather than removing it. Pass `status=active` for the list most integrations expect.",
+        "description": "By default this includes archived links, because `DELETE /links/{id}` archives rather than removes. Pass `status=active` for the list most integrations expect.\n\nNote that `active` excludes links that are paused, archived, expired, or blocked by moderation — it is the set that is actually resolving right now.",
         "operationId": "listWorkspaceLinks",
         "parameters": [
           { "$ref": "#/components/parameters/WorkspaceSlug" },
@@ -1004,8 +1101,24 @@
           {
             "name": "status",
             "in": "query",
-            "description": "Filter by link state. `all` (the default) includes archived links.",
+            "description": "Filter by link state. `all` (the default) includes archived links. `active` means live right now — it excludes anything paused, archived, past its expiry date, or blocked by moderation.",
             "schema": { "type": "string", "enum": ["all", "active", "inactive", "archived"], "default": "all" }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filter by what the link points at. `file-to-link` returns links backed by an uploaded file.",
+            "schema": { "type": "string", "enum": ["all", "links", "file-to-link"], "default": "all" }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Result order. `most-clicks` ranks by all-time clicks; `name-asc` sorts by title, falling back to the key.",
+            "schema": {
+              "type": "string",
+              "enum": ["newest", "oldest", "most-clicks", "name-asc"],
+              "default": "newest"
+            }
           }
         ],
         "responses": {
@@ -1039,7 +1152,24 @@
         "parameters": [
           { "$ref": "#/components/parameters/WorkspaceSlug" },
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } },
+          { "name": "search", "in": "query", "schema": { "type": "string" } },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by QR code state. `all` (the default) includes archived codes. `active` excludes anything paused, archived, expired, or blocked by moderation.",
+            "schema": { "type": "string", "enum": ["all", "active", "inactive", "archived"], "default": "all" }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Result order. `most-scans` ranks by all-time scans.",
+            "schema": {
+              "type": "string",
+              "enum": ["newest", "oldest", "most-scans", "name-asc"],
+              "default": "newest"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -1051,6 +1181,67 @@
                   "properties": {
                     "qrcodes": { "type": "array", "items": { "$ref": "#/components/schemas/Qrcode" } },
                     "total": { "type": "integer" },
+                    "page": { "type": "integer" },
+                    "limit": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/workspaces/{url}/documents": {
+      "get": {
+        "tags": ["Workspaces"],
+        "summary": "Retrieve workspace files",
+        "description": "Lists the files uploaded to a workspace, with the links pointing at each one.\n\nA file has no archived flag of its own — it counts as archived when every link pointing at it is. A file with no links at all is reported as `active`, so `active` and `archived` together account for every file.",
+        "operationId": "listWorkspaceDocuments",
+        "parameters": [
+          { "$ref": "#/components/parameters/WorkspaceSlug" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } },
+          { "name": "search", "in": "query", "description": "Matches the file name or its extension.", "schema": { "type": "string" } },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by whether the file's links are archived.",
+            "schema": { "type": "string", "enum": ["all", "active", "archived"], "default": "all" }
+          },
+          {
+            "name": "fileType",
+            "in": "query",
+            "description": "Filter by file family. Matching is case-insensitive, and `other` covers anything outside the named buckets, including files with no recorded extension.",
+            "schema": {
+              "type": "string",
+              "enum": ["all", "images", "pdfs", "documents", "other"],
+              "default": "all"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Result order. `most-clicks` ranks by the all-time clicks across a file's links.",
+            "schema": {
+              "type": "string",
+              "enum": ["newest", "oldest", "most-clicks", "largest", "name-asc"],
+              "default": "newest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "documents": { "type": "array", "items": { "$ref": "#/components/schemas/Document" } },
+                    "total": { "type": "integer", "description": "Number of files matching the current filters." },
                     "page": { "type": "integer" },
                     "limit": { "type": "integer" }
                   }

@@ -65,7 +65,9 @@
         "api-reference/endpoint/links/post/new-link/index",
         "api-reference/endpoint/links/put/update-link/index",
         "api-reference/endpoint/links/put/update-link-status-by-id/index",
-        "api-reference/endpoint/links/delete/delete-link-by-id/index"
+        "api-reference/endpoint/links/post/restore-link/index",
+        "api-reference/endpoint/links/delete/delete-link-by-id/index",
+        "api-reference/endpoint/links/delete/permanently-delete-link/index"
       ]
     },
     {
@@ -81,6 +83,8 @@
         "api-reference/endpoint/documents/get/retrieveDocumentStatsById/index",
         "api-reference/endpoint/documents/post/createNewDocumentByWorkspace/index",
         "api-reference/endpoint/documents/put/updateDocumentById/index",
+        "api-reference/endpoint/documents/post/archiveDocument/index",
+        "api-reference/endpoint/documents/post/restoreDocument/index",
         "api-reference/endpoint/documents/delete/documentById/index"
       ]
     },
@@ -91,6 +95,7 @@
         "api-reference/endpoint/workspaces/get/projectByUrl/index",
         "api-reference/endpoint/workspaces/get/links/index",
         "api-reference/endpoint/workspaces/get/qrcodes/index",
+        "api-reference/endpoint/workspaces/get/documents/index",
         "api-reference/endpoint/workspaces/get/members/index",
         "api-reference/endpoint/workspaces/get/projects-analytics-click/index",
         "api-reference/endpoint/workspaces/get/projects-analytics-stats/index",
