@@ -1,0 +1,9 @@
+---
+title: "Rename or recolour a tag"
+openapi: "PATCH /workspaces/{url}/tags/{tagId}"
+description: Change a tag's name, its colour, or both.
+---
+
+Both fields are optional, but at least one must be present. A name already
+used by another tag in the workspace returns 409 rather than surfacing a
+database constraint error.

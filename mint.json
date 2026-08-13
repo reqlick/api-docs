@@ -66,8 +66,11 @@
         "api-reference/endpoint/links/get/stats-by-id/index",
         "api-reference/endpoint/links/post/link-for-document/index",
         "api-reference/endpoint/links/post/new-link/index",
+        "api-reference/endpoint/links/post/bulk-create/index",
+        "api-reference/endpoint/links/post/bulk-actions/index",
         "api-reference/endpoint/links/put/update-link/index",
         "api-reference/endpoint/links/put/update-link-status-by-id/index",
+        "api-reference/endpoint/links/patch/link-tags/index",
         "api-reference/endpoint/links/post/restore-link/index",
         "api-reference/endpoint/links/delete/delete-link-by-id/index",
         "api-reference/endpoint/links/delete/permanently-delete-link/index"
@@ -87,10 +90,21 @@
         "api-reference/endpoint/documents/get/retrieveDocumentLinksById/index",
         "api-reference/endpoint/documents/get/retrieveDocumentStatsById/index",
         "api-reference/endpoint/documents/post/createNewDocumentByWorkspace/index",
+        "api-reference/endpoint/documents/post/bulk-create-links/index",
+        "api-reference/endpoint/documents/post/bulk-actions/index",
         "api-reference/endpoint/documents/put/updateDocumentById/index",
         "api-reference/endpoint/documents/post/archiveDocument/index",
         "api-reference/endpoint/documents/post/restoreDocument/index",
         "api-reference/endpoint/documents/delete/documentById/index"
+      ]
+    },
+    {
+      "group": "Tags",
+      "pages": [
+        "api-reference/endpoint/tags/get/list/index",
+        "api-reference/endpoint/tags/post/create/index",
+        "api-reference/endpoint/tags/patch/update/index",
+        "api-reference/endpoint/tags/delete/remove/index"
       ]
     },
     {
@@ -104,6 +118,7 @@
         "api-reference/endpoint/workspaces/get/projects-analytics-click/index",
         "api-reference/endpoint/workspaces/get/projects-analytics-stats/index",
         "api-reference/endpoint/workspaces/get/analytics-export/index",
+        "api-reference/endpoint/workspaces/get/export/index",
         "api-reference/endpoint/workspaces/put/projectByUrl/index",
         "api-reference/endpoint/workspaces/put/projectLogo/index",
         "api-reference/endpoint/workspaces/delete/projectByUrl/index"

@@ -1,0 +1,33 @@
+---
+title: "Export links, QR codes or files"
+openapi: "GET /workspaces/{url}/export"
+description: Download a workspace's links, QR codes or files as CSV.
+---
+
+Returns everything the filters describe, not a page — paging through the list
+endpoints and stitching the pages together is the thing this exists to avoid.
+Capped at 10,000 rows; `X-Export-Rows` carries the count.
+
+`resource` selects what to export: `links`, `qrcodes` or `documents`. Every
+filter the matching list endpoint accepts works here and means the same thing,
+so "the current filters" is one definition rather than two.
+
+`ids` exports exactly those rows and ignores the filters — for exporting a
+selection.
+
+```bash
+curl -G https://api.reqlick.com/workspaces/acme/export \
+  -H "Authorization: Bearer rqk_xxx" \
+  -d resource=links \
+  -d status=active \
+  -d columns=shortUrl,url,clicks,createdAt \
+  -o links.csv
+```
+
+Click counts are all-time, matching the dashboard's cards. If the analytics
+query fails the file still downloads with zeroes rather than failing outright.
+
+<Note>
+  For analytics rather than a list of links — clicks by country, by day, or one
+  row per click — use [Export analytics](/api-reference/endpoint/workspaces/get/analytics-export/index).
+</Note>

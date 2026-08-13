@@ -1,0 +1,13 @@
+---
+title: "Delete a tag"
+openapi: "DELETE /workspaces/{url}/tags/{tagId}"
+description: Remove a tag. The links keep working, untagged.
+---
+
+Deleting a tag does not delete anything it was on. A tag is a label on a link,
+not a container for it, so the links survive untagged — the response says how
+many lost it.
+
+```json
+{ "deleted": true, "untagged": 12 }
+```

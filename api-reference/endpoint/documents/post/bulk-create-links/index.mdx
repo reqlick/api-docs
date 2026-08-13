@@ -1,0 +1,18 @@
+---
+title: "Create links from files in bulk"
+openapi: "POST /workspaces/{url}/documents/bulk-create-links"
+description: Give each of up to 100 existing files its own short link or QR code.
+---
+
+Takes files already in the workspace and creates one link per file. Send `qr` to
+create QR codes instead.
+
+```bash
+curl -X POST https://api.reqlick.com/workspaces/acme/documents/bulk-create-links \
+  -H "Authorization: Bearer rqk_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{ "documentIds": ["doc_1", "doc_2"] }'
+```
+
+No storage is consumed — the files already exist — but each new link or code
+spends a link or QR slot against your plan.

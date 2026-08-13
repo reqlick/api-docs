@@ -1,0 +1,19 @@
+---
+title: "Archive, restore or delete files in bulk"
+openapi: "POST /workspaces/{url}/documents/bulk"
+description: Apply one action to up to 100 files.
+---
+
+Same shape as the links equivalent: one action, up to 100 ids, per-id outcomes.
+
+```bash
+curl -X POST https://api.reqlick.com/workspaces/acme/documents/bulk \
+  -H "Authorization: Bearer rqk_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{ "action": "archive", "ids": ["doc_1", "doc_2"] }'
+```
+
+<Warning>
+  `delete` removes the file from storage and is permanent. Archiving a file
+  archives the links that point at it, which is reversible.
+</Warning>
