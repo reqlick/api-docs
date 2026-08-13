@@ -47,14 +47,17 @@
   "navigation": [
     {
       "group": "Getting Started",
-      "pages": ["introduction", "data-model"]
+      "pages": [
+        "introduction",
+        "data-model"
+      ]
     },
-
     {
       "group": "API Documentation",
-      "pages": ["api-reference/introduction"]
+      "pages": [
+        "api-reference/introduction"
+      ]
     },
-
     {
       "group": "Links",
       "pages": [
@@ -72,7 +75,9 @@
     },
     {
       "group": "QR Codes",
-      "pages": ["api-reference/endpoint/qrcodes/post/qrcode/index"]
+      "pages": [
+        "api-reference/endpoint/qrcodes/post/qrcode/index"
+      ]
     },
     {
       "group": "Documents",
@@ -88,7 +93,6 @@
         "api-reference/endpoint/documents/delete/documentById/index"
       ]
     },
-
     {
       "group": "Workspaces",
       "pages": [
@@ -99,6 +103,7 @@
         "api-reference/endpoint/workspaces/get/members/index",
         "api-reference/endpoint/workspaces/get/projects-analytics-click/index",
         "api-reference/endpoint/workspaces/get/projects-analytics-stats/index",
+        "api-reference/endpoint/workspaces/get/analytics-export/index",
         "api-reference/endpoint/workspaces/put/projectByUrl/index",
         "api-reference/endpoint/workspaces/put/projectLogo/index",
         "api-reference/endpoint/workspaces/delete/projectByUrl/index"

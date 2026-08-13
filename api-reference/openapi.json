@@ -2,20 +2,45 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Reqlick API",
-    "description": "REST API for Reqlick — link shortening, QR codes, file-to-link, custom domains and analytics.\n\nAuthenticate with a workspace API key (`Authorization: Bearer rqk_...`), created under Settings → API Keys.\n\nA key is scoped to the single workspace it was created in. Using it against a different workspace returns 403, even when the owning user is a member of both.\n\nAPI access requires a paid plan.",
+    "description": "REST API for Reqlick \u2014 link shortening, QR codes, file-to-link, custom domains and analytics.\n\nAuthenticate with a workspace API key (`Authorization: Bearer rqk_...`), created under Settings \u2192 API Keys.\n\nA key is scoped to the single workspace it was created in. Using it against a different workspace returns 403, even when the owning user is a member of both.\n\nAPI access requires a paid plan.",
     "version": "3.0.0",
-    "contact": { "name": "Reqlick Support", "email": "support@reqlick.com" }
+    "contact": {
+      "name": "Reqlick Support",
+      "email": "support@reqlick.com"
+    }
   },
-  "servers": [{ "url": "https://api.reqlick.com" }],
-  "security": [{ "bearerAuth": [] }],
+  "servers": [
+    {
+      "url": "https://api.reqlick.com"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "tags": [
-    { "name": "Links" },
-    { "name": "QR Codes" },
-    { "name": "Documents" },
-    { "name": "Domains" },
-    { "name": "Workspaces" },
-    { "name": "Users" },
-    { "name": "Subscriptions" }
+    {
+      "name": "Links"
+    },
+    {
+      "name": "QR Codes"
+    },
+    {
+      "name": "Documents"
+    },
+    {
+      "name": "Domains"
+    },
+    {
+      "name": "Workspaces"
+    },
+    {
+      "name": "Users"
+    },
+    {
+      "name": "Subscriptions"
+    }
   ],
   "components": {
     "securitySchemes": {
@@ -28,232 +53,557 @@
     "responses": {
       "BadRequest": {
         "description": "Invalid request",
-        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
       "Unauthorized": {
-        "description": "Missing, malformed or revoked API key — or the plan no longer includes API access",
-        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "description": "Missing, malformed or revoked API key \u2014 or the plan no longer includes API access",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
       "Forbidden": {
         "description": "Authenticated, but the key has no access to this workspace or resource",
         "content": {
           "application/json": {
-            "schema": { "$ref": "#/components/schemas/Error" },
-            "example": { "error": "This API key does not have access to this workspace" }
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "This API key does not have access to this workspace"
+            }
           }
         }
       },
       "NotFound": {
         "description": "Resource not found",
-        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
-      "TooManyRequests": { "description": "Rate limit exceeded" },
+      "TooManyRequests": {
+        "description": "Rate limit exceeded"
+      },
       "ServerError": {
         "description": "Server error",
-        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       }
     },
     "schemas": {
       "Error": {
         "type": "object",
-        "properties": { "error": { "type": "string" } },
-        "required": ["error"]
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ]
       },
       "Link": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "domain": { "type": "string", "examples": ["rqk.sh"] },
-          "key": { "type": "string", "description": "Short key. Combined with `domain` this forms the short URL." },
-          "url": { "type": "string", "description": "Destination URL. Null for file links." },
-          "title": { "type": "string" },
-          "description": { "type": "string" },
-          "image": { "type": "string" },
-          "isActive": { "type": "boolean" },
-          "isArchived": { "type": "boolean" },
-          "isQR": { "type": "boolean" },
-          "isFile": { "type": "boolean" },
-          "expiresAt": { "type": "string", "format": "date-time" },
-          "ios": { "type": "string", "description": "iOS-specific destination." },
-          "android": { "type": "string", "description": "Android-specific destination." },
-          "workspaceId": { "type": "string" },
-          "documentId": { "type": "string" },
-          "clicks": { "type": "integer" },
-          "createdAt": { "type": "string", "format": "date-time" },
-          "updatedAt": { "type": "string", "format": "date-time" }
+          "id": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string",
+            "examples": [
+              "rqk.sh"
+            ]
+          },
+          "key": {
+            "type": "string",
+            "description": "Short key. Combined with `domain` this forms the short URL."
+          },
+          "url": {
+            "type": "string",
+            "description": "Destination URL. Null for file links."
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "isQR": {
+            "type": "boolean"
+          },
+          "isFile": {
+            "type": "boolean"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ios": {
+            "type": "string",
+            "description": "iOS-specific destination."
+          },
+          "android": {
+            "type": "string",
+            "description": "Android-specific destination."
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "documentId": {
+            "type": "string"
+          },
+          "clicks": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "LinkCreated": {
         "type": "object",
         "properties": {
-          "link_id": { "type": "string" },
-          "link_url": { "type": "string", "examples": ["rqk.sh/k5zvrg"] }
+          "link_id": {
+            "type": "string"
+          },
+          "link_url": {
+            "type": "string",
+            "examples": [
+              "rqk.sh/k5zvrg"
+            ]
+          }
         }
       },
       "LinkStats": {
         "type": "object",
         "properties": {
-          "clicks": { "type": "integer", "description": "Clicks in the requested window." },
-          "uniqueClicks": { "type": "integer", "description": "Distinct visitors in the window." },
-          "totalClicks": { "type": "integer", "description": "All-time clicks." },
+          "clicks": {
+            "type": "integer",
+            "description": "Clicks in the requested window."
+          },
+          "uniqueClicks": {
+            "type": "integer",
+            "description": "Distinct visitors in the window."
+          },
+          "totalClicks": {
+            "type": "integer",
+            "description": "All-time clicks."
+          },
           "averageVisitTime": {
             "type": "number",
-            "description": "Average view duration in ms. Null when no duration was recorded — not zero."
+            "description": "Average view duration in ms. Null when no duration was recorded \u2014 not zero."
           }
         }
       },
       "Document": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "file": { "type": "string", "description": "Storage key or URL." },
-          "size": { "type": "integer", "description": "Bytes." },
-          "type": { "type": "string" },
-          "workspaceId": { "type": "string" },
-          "createdAt": { "type": "string", "format": "date-time" },
-          "updatedAt": { "type": "string", "format": "date-time" }
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string",
+            "description": "Storage key or URL."
+          },
+          "size": {
+            "type": "integer",
+            "description": "Bytes."
+          },
+          "type": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Domain": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "slug": { "type": "string", "description": "The domain name itself, e.g. `go.example.com`." },
-          "verified": { "type": "boolean" },
-          "primary": { "type": "boolean" },
-          "target": { "type": "string", "description": "Root redirect destination." },
-          "workspaceId": { "type": "string" },
-          "lastChecked": { "type": "string", "format": "date-time" },
-          "createdAt": { "type": "string", "format": "date-time" }
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string",
+            "description": "The domain name itself, e.g. `go.example.com`."
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "primary": {
+            "type": "boolean"
+          },
+          "target": {
+            "type": "string",
+            "description": "Root redirect destination."
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "lastChecked": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Workspace": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "slug": { "type": "string" },
-          "url": { "type": "string", "description": "Same as `slug`; retained for backward compatibility." },
-          "logo": { "type": "string" },
-          "plan": { "type": "string" },
-          "role": { "type": "string", "enum": ["OWNER", "ADMIN", "MEMBER"] },
-          "isArchived": { "type": "boolean" },
-          "createdAt": { "type": "string", "format": "date-time" }
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "description": "Same as `slug`; retained for backward compatibility."
+          },
+          "logo": {
+            "type": "string"
+          },
+          "plan": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "OWNER",
+              "ADMIN",
+              "MEMBER"
+            ]
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Member": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "email": { "type": "string" },
-          "role": { "type": "string", "enum": ["OWNER", "ADMIN", "MEMBER"] },
-          "status": { "type": "string", "enum": ["ACCEPTED", "PENDING"] },
-          "userId": { "type": "string" },
-          "workspaceId": { "type": "string" }
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "OWNER",
+              "ADMIN",
+              "MEMBER"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "PENDING"
+            ]
+          },
+          "userId": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          }
         }
       },
       "Qrcode": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "linkId": { "type": "string" },
-          "workspaceId": { "type": "string" },
-          "createdAt": { "type": "string", "format": "date-time" }
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "linkId": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "QrcodeCreated": {
         "type": "object",
         "properties": {
-          "qrcode_id": { "type": "string" },
-          "link_id": { "type": "string" },
-          "link_url": { "type": "string" }
+          "qrcode_id": {
+            "type": "string"
+          },
+          "link_id": {
+            "type": "string"
+          },
+          "link_url": {
+            "type": "string"
+          }
         }
       },
       "Subscription": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
+          "id": {
+            "type": "string"
+          },
           "plan": {
             "type": "string",
-            "enum": ["FREE", "STARTER", "PRO", "LEGACY_PRO", "BUSINESS", "ENTERPRISE", "LAUNCH_PASS"]
+            "enum": [
+              "FREE",
+              "STARTER",
+              "PRO",
+              "LEGACY_PRO",
+              "BUSINESS",
+              "ENTERPRISE",
+              "LAUNCH_PASS"
+            ]
           },
-          "amount": { "type": "number", "description": "In dollars." },
-          "interval": { "type": "string", "enum": ["month", "year"] },
-          "isPaid": { "type": "boolean" },
-          "isPaymentFailed": { "type": "boolean" },
-          "isCanceledAtPeriodEnd": { "type": "boolean" },
-          "periodEnd": { "type": "string", "format": "date-time" },
+          "amount": {
+            "type": "number",
+            "description": "In dollars."
+          },
+          "interval": {
+            "type": "string",
+            "enum": [
+              "month",
+              "year"
+            ]
+          },
+          "isPaid": {
+            "type": "boolean"
+          },
+          "isPaymentFailed": {
+            "type": "boolean"
+          },
+          "isCanceledAtPeriodEnd": {
+            "type": "boolean"
+          },
+          "periodEnd": {
+            "type": "string",
+            "format": "date-time"
+          },
           "trialEndsAt": {
             "type": "string",
             "format": "date-time",
-            "description": "Null means no trial clock — the account does not expire."
+            "description": "Null means no trial clock \u2014 the account does not expire."
           },
-          "isTrial": { "type": "boolean" },
-          "isTrialActive": { "type": "boolean" },
-          "isTrialExpired": { "type": "boolean" },
-          "trialDaysRemaining": { "type": "integer" },
-          "shortLinksLimit": { "type": "integer" },
-          "qrCodeLinksLimit": { "type": "integer" },
-          "clicksLimit": { "type": "integer" },
-          "domainsLimit": { "type": "integer" },
-          "usersLimit": { "type": "integer" },
-          "projectsLimit": { "type": "integer" },
-          "stockableLimit": { "type": "integer" },
-          "filesLimit": { "type": "integer" },
-          "retentionLimit": { "type": "string" }
+          "isTrial": {
+            "type": "boolean"
+          },
+          "isTrialActive": {
+            "type": "boolean"
+          },
+          "isTrialExpired": {
+            "type": "boolean"
+          },
+          "trialDaysRemaining": {
+            "type": "integer"
+          },
+          "shortLinksLimit": {
+            "type": "integer"
+          },
+          "qrCodeLinksLimit": {
+            "type": "integer"
+          },
+          "clicksLimit": {
+            "type": "integer"
+          },
+          "domainsLimit": {
+            "type": "integer"
+          },
+          "usersLimit": {
+            "type": "integer"
+          },
+          "projectsLimit": {
+            "type": "integer"
+          },
+          "stockableLimit": {
+            "type": "integer"
+          },
+          "filesLimit": {
+            "type": "integer"
+          },
+          "retentionLimit": {
+            "type": "string"
+          }
         }
       },
       "Usage": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "plan": { "type": "string" },
-          "isPaid": { "type": "boolean" },
-          "shortLinksUsage": { "type": "integer" },
-          "shortLinksLimit": { "type": "integer" },
-          "qrCodeLinksUsage": { "type": "integer" },
-          "qrCodeLinksLimit": { "type": "integer" },
-          "clicksUsage": { "type": "integer", "description": "Null when the analytics store is unavailable." },
-          "clicksLimit": { "type": "integer" },
-          "domainsUsage": { "type": "integer" },
-          "domainsLimit": { "type": "integer" },
-          "seatsUsage": { "type": "integer" },
-          "usersLimit": { "type": "integer" },
-          "projectUsage": { "type": "integer" },
-          "projectsLimit": { "type": "integer" },
-          "storageUsage": { "type": "integer", "description": "Bytes." },
-          "filesUsage": { "type": "integer" },
-          "filesLimit": { "type": "integer" },
-          "retentionLimit": { "type": "string" }
+          "id": {
+            "type": "string"
+          },
+          "plan": {
+            "type": "string"
+          },
+          "isPaid": {
+            "type": "boolean"
+          },
+          "shortLinksUsage": {
+            "type": "integer"
+          },
+          "shortLinksLimit": {
+            "type": "integer"
+          },
+          "qrCodeLinksUsage": {
+            "type": "integer"
+          },
+          "qrCodeLinksLimit": {
+            "type": "integer"
+          },
+          "clicksUsage": {
+            "type": "integer",
+            "description": "Null when the analytics store is unavailable."
+          },
+          "clicksLimit": {
+            "type": "integer"
+          },
+          "domainsUsage": {
+            "type": "integer"
+          },
+          "domainsLimit": {
+            "type": "integer"
+          },
+          "seatsUsage": {
+            "type": "integer"
+          },
+          "usersLimit": {
+            "type": "integer"
+          },
+          "projectUsage": {
+            "type": "integer"
+          },
+          "projectsLimit": {
+            "type": "integer"
+          },
+          "storageUsage": {
+            "type": "integer",
+            "description": "Bytes."
+          },
+          "filesUsage": {
+            "type": "integer"
+          },
+          "filesLimit": {
+            "type": "integer"
+          },
+          "retentionLimit": {
+            "type": "string"
+          }
         }
       },
       "User": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "email": { "type": "string" },
-          "name": { "type": "string" },
-          "lastName": { "type": "string" },
-          "image": { "type": "string" },
-          "subscription": { "$ref": "#/components/schemas/Subscription" }
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "subscription": {
+            "$ref": "#/components/schemas/Subscription"
+          }
         }
       },
       "GeoStats": {
         "type": "object",
         "properties": {
-          "total_views": { "type": "integer" },
+          "total_views": {
+            "type": "integer"
+          },
           "list": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "label": { "type": "string", "description": "Resolved display name, e.g. `France`." },
-                "shortCode": { "type": "string", "description": "ISO alpha-2 country code." },
-                "country": { "type": "string", "description": "Present for region and city selectors." },
-                "total_views": { "type": "integer" },
-                "new_views": { "type": "integer", "description": "Distinct visitors." }
+                "label": {
+                  "type": "string",
+                  "description": "Resolved display name, e.g. `France`."
+                },
+                "shortCode": {
+                  "type": "string",
+                  "description": "ISO alpha-2 country code."
+                },
+                "country": {
+                  "type": "string",
+                  "description": "Present for region and city selectors."
+                },
+                "total_views": {
+                  "type": "integer"
+                },
+                "new_views": {
+                  "type": "integer",
+                  "description": "Distinct visitors."
+                }
               }
             }
           }
@@ -266,26 +616,153 @@
         "in": "path",
         "required": true,
         "description": "Workspace slug.",
-        "schema": { "type": "string" }
+        "schema": {
+          "type": "string"
+        }
       },
       "StartDate": {
         "name": "startDate",
         "in": "query",
         "description": "ISO date. Defaults to 30 days ago.",
-        "schema": { "type": "string", "format": "date" }
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
       },
       "EndDate": {
         "name": "endDate",
         "in": "query",
         "description": "ISO date. Defaults to today. The window is half-open: the end day is included.",
-        "schema": { "type": "string", "format": "date" }
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "FilterTag": {
+        "name": "tag",
+        "in": "query",
+        "description": "Tag ids, comma-separated. `none` selects untagged links.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "tag_123,none"
+      },
+      "FilterDomain": {
+        "name": "domain",
+        "in": "query",
+        "description": "Short domains, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "rqk.sh"
+      },
+      "FilterCreator": {
+        "name": "creator",
+        "in": "query",
+        "description": "User ids, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "usr_123"
+      },
+      "FilterLinkType": {
+        "name": "type",
+        "in": "query",
+        "description": "Link kind. Both values together is the same as neither.",
+        "schema": {
+          "type": "string",
+          "example": "links,file-to-link"
+        }
+      },
+      "FilterLink": {
+        "name": "link",
+        "in": "query",
+        "description": "Link ids, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "lnk_123"
+      },
+      "FilterCountry": {
+        "name": "country",
+        "in": "query",
+        "description": "ISO alpha-2 country codes, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "FR,DE"
+      },
+      "FilterCity": {
+        "name": "city",
+        "in": "query",
+        "description": "Cities, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "Paris"
+      },
+      "FilterDevice": {
+        "name": "device",
+        "in": "query",
+        "description": "Device types, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "mobile,desktop"
+      },
+      "FilterBrowser": {
+        "name": "browser",
+        "in": "query",
+        "description": "Browsers, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "Chrome"
+      },
+      "FilterOs": {
+        "name": "os",
+        "in": "query",
+        "description": "Operating systems, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "iOS"
+      },
+      "FilterReferrer": {
+        "name": "referrer",
+        "in": "query",
+        "description": "Traffic sources, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "google.com"
+      },
+      "FilterLanguage": {
+        "name": "language",
+        "in": "query",
+        "description": "Language tags, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "en-US"
+      },
+      "FilterRegion": {
+        "name": "region",
+        "in": "query",
+        "description": "Regions, comma-separated.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "\u00cele-de-France"
       }
     }
   },
   "paths": {
     "/links/new/{workspace}": {
       "post": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Create a link",
         "operationId": "createLink",
         "parameters": [
@@ -294,14 +771,18 @@
             "in": "path",
             "required": true,
             "description": "Workspace slug.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "subscriptionId",
             "in": "query",
             "required": true,
             "description": "Subscription ID that owns the workspace. Available from `GET /subscriptions`.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -311,24 +792,64 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "url": { "type": "string", "description": "Destination URL." },
-                  "domain": { "type": "string", "default": "rqk.sh" },
-                  "key": { "type": "string", "description": "Custom short key. Generated when omitted." },
-                  "title": { "type": "string" },
-                  "description": { "type": "string" },
-                  "image": { "type": "string" },
-                  "file": { "type": "string", "format": "binary", "description": "Social card image." },
-                  "expiresAt": { "type": "string", "format": "date-time" },
-                  "password": { "type": "string" },
-                  "ios": { "type": "string" },
-                  "android": { "type": "string" },
-                  "utm_source": { "type": "string" },
-                  "utm_medium": { "type": "string" },
-                  "utm_campaign": { "type": "string" },
-                  "utm_term": { "type": "string" },
-                  "utm_content": { "type": "string" }
+                  "url": {
+                    "type": "string",
+                    "description": "Destination URL."
+                  },
+                  "domain": {
+                    "type": "string",
+                    "default": "rqk.sh"
+                  },
+                  "key": {
+                    "type": "string",
+                    "description": "Custom short key. Generated when omitted."
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Social card image."
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "ios": {
+                    "type": "string"
+                  },
+                  "android": {
+                    "type": "string"
+                  },
+                  "utm_source": {
+                    "type": "string"
+                  },
+                  "utm_medium": {
+                    "type": "string"
+                  },
+                  "utm_campaign": {
+                    "type": "string"
+                  },
+                  "utm_term": {
+                    "type": "string"
+                  },
+                  "utm_content": {
+                    "type": "string"
+                  }
                 },
-                "required": ["url"]
+                "required": [
+                  "url"
+                ]
               }
             }
           }
@@ -336,103 +857,220 @@
         "responses": {
           "200": {
             "description": "Created",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LinkCreated" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkCreated"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
           "403": {
             "description": "No access to this workspace, or a plan limit has been reached",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
-          "500": { "$ref": "#/components/responses/ServerError" }
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
       }
     },
     "/links/{id}": {
       "get": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Retrieve a link",
         "operationId": "getLink",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Link" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Link"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       },
       "delete": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Delete a link",
-        "description": "Archives the link — this is reversible and does **not** free a slot against your plan. It stops resolving immediately and its analytics are retained.\n\nThe link **still appears in `GET /workspaces/{url}/links`** — archived links are read back from there to offer Restore. Pass `?status=active` to that endpoint to exclude them, or `POST /links/{id}/restore` to bring one back.\n\nTo remove a link for good, use `DELETE /links/{id}/permanent`.",
+        "description": "Archives the link \u2014 this is reversible and does **not** free a slot against your plan. It stops resolving immediately and its analytics are retained.\n\nThe link **still appears in `GET /workspaces/{url}/links`** \u2014 archived links are read back from there to offer Restore. Pass `?status=active` to that endpoint to exclude them, or `POST /links/{id}/restore` to bring one back.\n\nTo remove a link for good, use `DELETE /links/{id}/permanent`.",
         "operationId": "deleteLink",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Deleted",
             "content": {
               "application/json": {
-                "schema": { "type": "object", "properties": { "message": { "type": "string" } } }
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/links/{id}/permanent": {
       "delete": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Permanently delete a link or QR code",
-        "description": "Removes the link for good. This cannot be undone and the short URL stops resolving immediately.\n\nWorks for QR codes too — a QR code is a link, so the same id space covers both, and its QR image records are removed with it.\n\nClick history is **kept**: analytics for a deleted link remain available for your reports. The slot it occupied stays counted against your plan, so deleting and recreating does not reset a limit.\n\nA link blocked by moderation cannot be permanently deleted and returns `403`; archive it instead.",
+        "description": "Removes the link for good. This cannot be undone and the short URL stops resolving immediately.\n\nWorks for QR codes too \u2014 a QR code is a link, so the same id space covers both, and its QR image records are removed with it.\n\nClick history is **kept**: analytics for a deleted link remain available for your reports. The slot it occupied stays counted against your plan, so deleting and recreating does not reset a limit.\n\nA link blocked by moderation cannot be permanently deleted and returns `403`; archive it instead.",
         "operationId": "permanentlyDeleteLink",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Permanently deleted",
             "content": {
               "application/json": {
-                "schema": { "type": "object", "properties": { "message": { "type": "string" } } }
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/links/{id}/restore": {
       "post": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Restore an archived link",
         "description": "Brings an archived link back. It returns **deactivated**, so it does not start resolving again until you activate it with `PUT /links/{id}/status`.\n\nReturns `400` if the link is not archived, and `409` if it points at a file that has since been permanently deleted.",
         "operationId": "restoreLink",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Restored",
             "content": {
               "application/json": {
-                "schema": { "type": "object", "properties": { "message": { "type": "string" } } }
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           },
-          "400": { "description": "The link is not archived" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "400": {
+            "description": "The link is not archived"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/links/update": {
       "put": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Update a link",
         "operationId": "updateLink",
         "requestBody": {
@@ -442,19 +1080,46 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": { "type": "string" },
-                  "url": { "type": "string" },
-                  "key": { "type": "string" },
-                  "domain": { "type": "string" },
-                  "title": { "type": "string" },
-                  "description": { "type": "string" },
-                  "image": { "type": "string" },
-                  "expiresAt": { "type": "string", "format": "date-time" },
-                  "password": { "type": "string" },
-                  "ios": { "type": "string", "description": "Send an empty string to clear." },
-                  "android": { "type": "string", "description": "Send an empty string to clear." }
+                  "id": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "key": {
+                    "type": "string"
+                  },
+                  "domain": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string"
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "ios": {
+                    "type": "string",
+                    "description": "Send an empty string to clear."
+                  },
+                  "android": {
+                    "type": "string",
+                    "description": "Send an empty string to clear."
+                  }
                 },
-                "required": ["id"]
+                "required": [
+                  "id"
+                ]
               }
             }
           }
@@ -462,22 +1127,47 @@
         "responses": {
           "200": {
             "description": "Updated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Link" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Link"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/links/{id}/status": {
       "put": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Update link status",
         "description": "Activate, deactivate or archive a link.",
         "operationId": "updateLinkStatus",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -485,8 +1175,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "isActive": { "type": "boolean" },
-                  "isArchived": { "type": "boolean" }
+                  "isActive": {
+                    "type": "boolean"
+                  },
+                  "isArchived": {
+                    "type": "boolean"
+                  }
                 }
               }
             }
@@ -495,40 +1189,79 @@
         "responses": {
           "200": {
             "description": "Updated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Link" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Link"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/links/{id}/stats": {
       "get": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Retrieve link analytics",
         "operationId": "getLinkStats",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
-          { "$ref": "#/components/parameters/StartDate" },
-          { "$ref": "#/components/parameters/EndDate" }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/StartDate"
+          },
+          {
+            "$ref": "#/components/parameters/EndDate"
+          }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LinkStats" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkStats"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/links/document": {
       "post": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Create a link for a document",
-        "description": "Creates an additional short link pointing at an existing uploaded file.\n\nOnly needed for a *second* link on a document — `POST /documents/{url}` already accepts `domain` and `key`, so a branded link can be created in one call at upload time.",
+        "description": "Creates an additional short link pointing at an existing uploaded file.\n\nOnly needed for a *second* link on a document \u2014 `POST /documents/{url}` already accepts `domain` and `key`, so a branded link can be created in one call at upload time.",
         "operationId": "createDocumentLink",
         "requestBody": {
           "required": true,
@@ -537,7 +1270,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "documentId": { "type": "string", "description": "ID of the uploaded document." },
+                  "documentId": {
+                    "type": "string",
+                    "description": "ID of the uploaded document."
+                  },
                   "workspace": {
                     "type": "string",
                     "description": "Workspace **slug**, not its ID. Sending an ID returns 422 \"workspace is required\"."
@@ -546,9 +1282,15 @@
                     "type": "string",
                     "description": "Custom domain. Must already belong to the workspace, else 422. Defaults to rqk.sh."
                   },
-                  "key": { "type": "string", "description": "Short key. Generated when omitted." }
+                  "key": {
+                    "type": "string",
+                    "description": "Short key. Generated when omitted."
+                  }
                 },
-                "required": ["documentId", "workspace"]
+                "required": [
+                  "documentId",
+                  "workspace"
+                ]
               }
             }
           }
@@ -556,17 +1298,31 @@
         "responses": {
           "201": {
             "description": "Created",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Link" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Link"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
         }
       }
     },
     "/links/random": {
       "get": {
-        "tags": ["Links"],
+        "tags": [
+          "Links"
+        ],
         "summary": "Generate an unused short key",
         "description": "Returns a random 6-character key that is not yet taken on the given domain.",
         "operationId": "getRandomKey",
@@ -575,24 +1331,43 @@
             "name": "domain",
             "in": "query",
             "description": "Defaults to `rqk.sh`.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "A short key",
-            "content": { "application/json": { "schema": { "type": "string", "examples": ["k5zvrg"] } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "examples": [
+                    "k5zvrg"
+                  ]
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/qrcodes/{url}": {
       "post": {
-        "tags": ["QR Codes"],
+        "tags": [
+          "QR Codes"
+        ],
         "summary": "Create a QR code",
         "operationId": "createQrcode",
-        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -600,15 +1375,32 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "url": { "type": "string" },
-                  "name": { "type": "string" },
-                  "domain": { "type": "string" },
-                  "key": { "type": "string" },
-                  "bgColor": { "type": "string" },
-                  "fgColor": { "type": "string" },
-                  "logo": { "type": "string", "format": "binary" }
+                  "url": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "domain": {
+                    "type": "string"
+                  },
+                  "key": {
+                    "type": "string"
+                  },
+                  "bgColor": {
+                    "type": "string"
+                  },
+                  "fgColor": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
                 },
-                "required": ["url"]
+                "required": [
+                  "url"
+                ]
               }
             }
           }
@@ -616,17 +1408,31 @@
         "responses": {
           "200": {
             "description": "Created",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/QrcodeCreated" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QrcodeCreated"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
         }
       }
     },
     "/documents": {
       "get": {
-        "tags": ["Documents"],
+        "tags": [
+          "Documents"
+        ],
         "summary": "Retrieve documents",
         "operationId": "listDocuments",
         "parameters": [
@@ -635,7 +1441,9 @@
             "in": "query",
             "required": true,
             "description": "Workspace slug. `workspaceId` is accepted as an alternative.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -643,23 +1451,40 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Document" } }
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Document"
+                  }
+                }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "422": { "description": "Missing `project` or `workspaceId`" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "description": "Missing `project` or `workspaceId`"
+          }
         }
       }
     },
     "/documents/{url}": {
       "post": {
-        "tags": ["Documents"],
+        "tags": [
+          "Documents"
+        ],
         "summary": "Create a document",
-        "description": "Uploads a file and creates a file-to-link document in the workspace.\n\n**This also creates the short link.** Pass `domain` and `key` to control it — omit them and you get a random key on `rqk.sh`, which then needs a second link plus a delete to tidy up. These are **form fields, not query parameters**; query parameters are ignored.",
+        "description": "Uploads a file and creates a file-to-link document in the workspace.\n\n**This also creates the short link.** Pass `domain` and `key` to control it \u2014 omit them and you get a random key on `rqk.sh`, which then needs a second link plus a delete to tidy up. These are **form fields, not query parameters**; query parameters are ignored.",
         "operationId": "createDocument",
-        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -667,8 +1492,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "file": { "type": "string", "format": "binary", "description": "The file to upload." },
-                  "name": { "type": "string", "description": "Display name. Defaults to the filename." },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to upload."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Display name. Defaults to the filename."
+                  },
                   "domain": {
                     "type": "string",
                     "description": "Custom domain for the generated link. Must already belong to the workspace, else 422. Defaults to `rqk.sh`. Send this to get a branded link in a single call."
@@ -677,15 +1509,34 @@
                     "type": "string",
                     "description": "Short key for the generated link. A random key is minted when omitted."
                   },
-                  "title": { "type": "string" },
-                  "description": { "type": "string" },
-                  "card": { "type": "string", "format": "binary", "description": "Social card image." },
-                  "password": { "type": "string" },
-                  "expiresAt": { "type": "string", "format": "date-time" },
-                  "ios": { "type": "string" },
-                  "android": { "type": "string" }
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "card": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Social card image."
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "ios": {
+                    "type": "string"
+                  },
+                  "android": {
+                    "type": "string"
+                  }
                 },
-                "required": ["file"]
+                "required": [
+                  "file"
+                ]
               }
             }
           }
@@ -693,35 +1544,81 @@
         "responses": {
           "200": {
             "description": "Created",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Document" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Document"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
         }
       }
     },
     "/documents/{id}": {
       "get": {
-        "tags": ["Documents"],
+        "tags": [
+          "Documents"
+        ],
         "summary": "Retrieve a document",
         "operationId": "getDocument",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Document" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Document"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       },
       "put": {
-        "tags": ["Documents"],
+        "tags": [
+          "Documents"
+        ],
         "summary": "Update a document",
         "operationId": "updateDocument",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -729,8 +1626,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
-                  "file": { "type": "string", "format": "binary" }
+                  "name": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
                 }
               }
             }
@@ -739,55 +1641,119 @@
         "responses": {
           "200": {
             "description": "Updated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Document" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Document"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       },
       "delete": {
-        "tags": ["Documents"],
+        "tags": [
+          "Documents"
+        ],
         "summary": "Delete a document",
-        "description": "Permanently deletes the file. This cannot be undone.\n\nThe stored object is removed from storage, the freed space is returned to your quota, and **every link pointing at the file is deleted with it** — those short URLs stop resolving. Click history is kept for your reports, and the file slot stays counted against your plan.\n\nTo stop sharing a file without destroying it, use `POST /documents/{id}/archive` instead.",
+        "description": "Permanently deletes the file. This cannot be undone.\n\nThe stored object is removed from storage, the freed space is returned to your quota, and **every link pointing at the file is deleted with it** \u2014 those short URLs stop resolving. Click history is kept for your reports, and the file slot stays counted against your plan.\n\nTo stop sharing a file without destroying it, use `POST /documents/{id}/archive` instead.",
         "operationId": "deleteDocument",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "200": { "description": "Deleted" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "200": {
+            "description": "Deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/documents/{id}/links": {
       "get": {
-        "tags": ["Documents"],
+        "tags": [
+          "Documents"
+        ],
         "summary": "Retrieve document links",
         "operationId": "getDocumentLinks",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Link" } }
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Link"
+                  }
+                }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/documents/{id}/archive": {
       "post": {
-        "tags": ["Documents"],
+        "tags": [
+          "Documents"
+        ],
         "summary": "Archive a file",
-        "description": "Stops the file being shared, reversibly. Every link pointing at it is archived and stops resolving; the file stays in storage and continues to count toward your storage quota.\n\nA file has no archived flag of its own — it counts as archived when every link pointing at it is. Returns `400` for a file with no links, since there is nothing to archive.\n\nUse `GET /workspaces/{url}/documents?status=archived` to list them, and `POST /documents/{id}/restore` to undo.",
+        "description": "Stops the file being shared, reversibly. Every link pointing at it is archived and stops resolving; the file stays in storage and continues to count toward your storage quota.\n\nA file has no archived flag of its own \u2014 it counts as archived when every link pointing at it is. Returns `400` for a file with no links, since there is nothing to archive.\n\nUse `GET /workspaces/{url}/documents?status=archived` to list them, and `POST /documents/{id}/restore` to undo.",
         "operationId": "archiveDocument",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Archived",
@@ -795,25 +1761,51 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "message": { "type": "string" }, "linksArchived": { "type": "integer" } }
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "linksArchived": {
+                      "type": "integer"
+                    }
+                  }
                 }
               }
             }
           },
-          "400": { "description": "The file has no links to archive" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "400": {
+            "description": "The file has no links to archive"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/documents/{id}/restore": {
       "post": {
-        "tags": ["Documents"],
+        "tags": [
+          "Documents"
+        ],
         "summary": "Restore an archived file",
         "description": "Un-archives every archived link pointing at the file. They return **deactivated**, so nothing resolves again until you activate each one with `PUT /links/{id}/status`.\n\nThis restores all of the file's archived links, including any you archived individually. Returns `400` if the file is not archived.",
         "operationId": "restoreDocument",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Restored",
@@ -821,27 +1813,55 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "message": { "type": "string" }, "linksRestored": { "type": "integer" } }
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "linksRestored": {
+                      "type": "integer"
+                    }
+                  }
                 }
               }
             }
           },
-          "400": { "description": "The file is not archived" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "400": {
+            "description": "The file is not archived"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/documents/{id}/stats": {
       "get": {
-        "tags": ["Documents"],
+        "tags": [
+          "Documents"
+        ],
         "summary": "Retrieve document analytics",
         "operationId": "getDocumentStats",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
-          { "$ref": "#/components/parameters/StartDate" },
-          { "$ref": "#/components/parameters/EndDate" }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/StartDate"
+          },
+          {
+            "$ref": "#/components/parameters/EndDate"
+          }
         ],
         "responses": {
           "200": {
@@ -851,23 +1871,37 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "totalClicks": { "type": "integer" },
-                    "uniqueVisitorCount": { "type": "integer" },
-                    "averageVisitTime": { "type": "number" }
+                    "totalClicks": {
+                      "type": "integer"
+                    },
+                    "uniqueVisitorCount": {
+                      "type": "integer"
+                    },
+                    "averageVisitTime": {
+                      "type": "number"
+                    }
                   }
                 }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/domains/{slug}": {
       "get": {
-        "tags": ["Domains"],
+        "tags": [
+          "Domains"
+        ],
         "summary": "Retrieve domains",
         "description": "Lists custom domains for a workspace. Here `slug` is the **workspace** slug.",
         "operationId": "listDomains",
@@ -877,7 +1911,9 @@
             "in": "path",
             "required": true,
             "description": "Workspace slug.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -885,17 +1921,30 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Domain" } }
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Domain"
+                  }
+                }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       },
       "post": {
-        "tags": ["Domains"],
+        "tags": [
+          "Domains"
+        ],
         "summary": "Create a domain",
         "description": "Adds a custom domain to a workspace. Here `slug` is the **workspace** slug; the domain name goes in the body.",
         "operationId": "createDomain",
@@ -905,7 +1954,9 @@
             "in": "path",
             "required": true,
             "description": "Workspace slug.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -915,10 +1966,18 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "slug": { "type": "string", "description": "The domain name, e.g. `go.example.com`." },
-                  "target": { "type": "string", "description": "Optional root redirect destination." }
+                  "slug": {
+                    "type": "string",
+                    "description": "The domain name, e.g. `go.example.com`."
+                  },
+                  "target": {
+                    "type": "string",
+                    "description": "Optional root redirect destination."
+                  }
                 },
-                "required": ["slug"]
+                "required": [
+                  "slug"
+                ]
               }
             }
           }
@@ -926,15 +1985,29 @@
         "responses": {
           "200": {
             "description": "Created",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Domain" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Domain"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
         }
       },
       "delete": {
-        "tags": ["Domains"],
+        "tags": [
+          "Domains"
+        ],
         "summary": "Delete a domain",
         "description": "Removes a custom domain. Here `slug` is the **domain** name, not the workspace. Requires OWNER or ADMIN.",
         "operationId": "deleteDomain",
@@ -944,20 +2017,32 @@
             "in": "path",
             "required": true,
             "description": "Domain name, e.g. `go.example.com`.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
-          "200": { "description": "Deleted" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "description": "OWNER or ADMIN role required, or key scoped to another workspace" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "200": {
+            "description": "Deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "OWNER or ADMIN role required, or key scoped to another workspace"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/domains/{slug}/status": {
       "get": {
-        "tags": ["Domains"],
+        "tags": [
+          "Domains"
+        ],
         "summary": "Verify domain status",
         "description": "Checks DNS and TLS provisioning for a custom domain.",
         "operationId": "getDomainStatus",
@@ -967,7 +2052,9 @@
             "in": "path",
             "required": true,
             "description": "Domain name.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -978,23 +2065,38 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "verified": { "type": "boolean" },
-                    "status": { "type": "string" },
-                    "lastChecked": { "type": "string", "format": "date-time" }
+                    "verified": {
+                      "type": "boolean"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "lastChecked": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
                   }
                 }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/domains/{slug}/redirect": {
       "post": {
-        "tags": ["Domains"],
+        "tags": [
+          "Domains"
+        ],
         "summary": "Set domain root redirect",
         "description": "Sets where the domain's root URL sends visitors.",
         "operationId": "setDomainRedirect",
@@ -1004,7 +2106,9 @@
             "in": "path",
             "required": true,
             "description": "Domain name.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -1013,42 +2117,82 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": { "target": { "type": "string" } },
-                "required": ["target"]
+                "properties": {
+                  "target": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "target"
+                ]
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "Updated" },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "200": {
+            "description": "Updated"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/workspaces/{url}": {
       "get": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Retrieve a workspace",
         "operationId": "getWorkspace",
-        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Workspace" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workspace"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       },
       "put": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Update a workspace",
         "operationId": "updateWorkspace",
-        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1056,8 +2200,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
-                  "slug": { "type": "string" }
+                  "name": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -1066,49 +2214,116 @@
         "responses": {
           "200": {
             "description": "Updated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Workspace" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workspace"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       },
       "delete": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Delete a workspace",
         "description": "Requires the OWNER role.",
         "operationId": "deleteWorkspace",
-        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
         "responses": {
-          "200": { "description": "Deleted" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "description": "OWNER role required, or key scoped to another workspace" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "200": {
+            "description": "Deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "OWNER role required, or key scoped to another workspace"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/workspaces/{url}/links": {
       "get": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Retrieve workspace links",
-        "description": "By default this includes archived links, because `DELETE /links/{id}` archives rather than removes. Pass `status=active` for the list most integrations expect.\n\nNote that `active` excludes links that are paused, archived, expired, or blocked by moderation — it is the set that is actually resolving right now.",
+        "description": "By default this includes archived links, because `DELETE /links/{id}` archives rather than removes. Pass `status=active` for the list most integrations expect.\n\nNote that `active` excludes links that are paused, archived, expired, or blocked by moderation \u2014 it is the set that is actually resolving right now.",
         "operationId": "listWorkspaceLinks",
         "parameters": [
-          { "$ref": "#/components/parameters/WorkspaceSlug" },
-          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } },
-          { "name": "search", "in": "query", "schema": { "type": "string" } },
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "status",
             "in": "query",
-            "description": "Filter by link state. `all` (the default) includes archived links. `active` means live right now — it excludes anything paused, archived, past its expiry date, or blocked by moderation.",
-            "schema": { "type": "string", "enum": ["all", "active", "inactive", "archived"], "default": "all" }
+            "description": "Filter by link state. `all` (the default) includes archived links. `active` means live right now \u2014 it excludes anything paused, archived, past its expiry date, or blocked by moderation.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "active",
+                "inactive",
+                "archived"
+              ],
+              "default": "all"
+            }
           },
           {
             "name": "type",
             "in": "query",
             "description": "Filter by what the link points at. `file-to-link` returns links backed by an uploaded file.",
-            "schema": { "type": "string", "enum": ["all", "links", "file-to-link"], "default": "all" }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "links",
+                "file-to-link"
+              ],
+              "default": "all"
+            }
           },
           {
             "name": "sort",
@@ -1116,7 +2331,12 @@
             "description": "Result order. `most-clicks` ranks by all-time clicks; `name-asc` sorts by title, falling back to the key.",
             "schema": {
               "type": "string",
-              "enum": ["newest", "oldest", "most-clicks", "name-asc"],
+              "enum": [
+                "newest",
+                "oldest",
+                "most-clicks",
+                "name-asc"
+              ],
               "default": "newest"
             }
           }
@@ -1129,36 +2349,86 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "links": { "type": "array", "items": { "$ref": "#/components/schemas/Link" } },
-                    "total": { "type": "integer" },
-                    "page": { "type": "integer" },
-                    "limit": { "type": "integer" }
+                    "links": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Link"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    }
                   }
                 }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/workspaces/{url}/qrcodes": {
       "get": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Retrieve QR codes",
         "operationId": "listWorkspaceQrcodes",
         "parameters": [
-          { "$ref": "#/components/parameters/WorkspaceSlug" },
-          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } },
-          { "name": "search", "in": "query", "schema": { "type": "string" } },
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "status",
             "in": "query",
             "description": "Filter by QR code state. `all` (the default) includes archived codes. `active` excludes anything paused, archived, expired, or blocked by moderation.",
-            "schema": { "type": "string", "enum": ["all", "active", "inactive", "archived"], "default": "all" }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "active",
+                "inactive",
+                "archived"
+              ],
+              "default": "all"
+            }
           },
           {
             "name": "sort",
@@ -1166,7 +2436,12 @@
             "description": "Result order. `most-scans` ranks by all-time scans.",
             "schema": {
               "type": "string",
-              "enum": ["newest", "oldest", "most-scans", "name-asc"],
+              "enum": [
+                "newest",
+                "oldest",
+                "most-scans",
+                "name-asc"
+              ],
               "default": "newest"
             }
           }
@@ -1179,37 +2454,87 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "qrcodes": { "type": "array", "items": { "$ref": "#/components/schemas/Qrcode" } },
-                    "total": { "type": "integer" },
-                    "page": { "type": "integer" },
-                    "limit": { "type": "integer" }
+                    "qrcodes": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Qrcode"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    }
                   }
                 }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/workspaces/{url}/documents": {
       "get": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Retrieve workspace files",
-        "description": "Lists the files uploaded to a workspace, with the links pointing at each one.\n\nA file has no archived flag of its own — it counts as archived when every link pointing at it is. A file with no links at all is reported as `active`, so `active` and `archived` together account for every file.",
+        "description": "Lists the files uploaded to a workspace, with the links pointing at each one.\n\nA file has no archived flag of its own \u2014 it counts as archived when every link pointing at it is. A file with no links at all is reported as `active`, so `active` and `archived` together account for every file.",
         "operationId": "listWorkspaceDocuments",
         "parameters": [
-          { "$ref": "#/components/parameters/WorkspaceSlug" },
-          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } },
-          { "name": "search", "in": "query", "description": "Matches the file name or its extension.", "schema": { "type": "string" } },
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Matches the file name or its extension.",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "status",
             "in": "query",
             "description": "Filter by whether the file's links are archived.",
-            "schema": { "type": "string", "enum": ["all", "active", "archived"], "default": "all" }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "active",
+                "archived"
+              ],
+              "default": "all"
+            }
           },
           {
             "name": "fileType",
@@ -1217,7 +2542,13 @@
             "description": "Filter by file family. Matching is case-insensitive, and `other` covers anything outside the named buckets, including files with no recorded extension.",
             "schema": {
               "type": "string",
-              "enum": ["all", "images", "pdfs", "documents", "other"],
+              "enum": [
+                "all",
+                "images",
+                "pdfs",
+                "documents",
+                "other"
+              ],
               "default": "all"
             }
           },
@@ -1227,7 +2558,13 @@
             "description": "Result order. `most-clicks` ranks by the all-time clicks across a file's links.",
             "schema": {
               "type": "string",
-              "enum": ["newest", "oldest", "most-clicks", "largest", "name-asc"],
+              "enum": [
+                "newest",
+                "oldest",
+                "most-clicks",
+                "largest",
+                "name-asc"
+              ],
               "default": "newest"
             }
           }
@@ -1240,56 +2577,104 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "documents": { "type": "array", "items": { "$ref": "#/components/schemas/Document" } },
-                    "total": { "type": "integer", "description": "Number of files matching the current filters." },
-                    "page": { "type": "integer" },
-                    "limit": { "type": "integer" }
+                    "documents": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Document"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Number of files matching the current filters."
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    }
                   }
                 }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/workspaces/{url}/members": {
       "get": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Retrieve workspace members",
         "operationId": "listWorkspaceMembers",
-        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Member" } }
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Member"
+                  }
+                }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/workspaces/{url}/logo": {
       "put": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Update workspace logo",
         "operationId": "updateWorkspaceLogo",
-        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "properties": { "file": { "type": "string", "format": "binary" } },
-                "required": ["file"]
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
               }
             }
           }
@@ -1299,22 +2684,41 @@
             "description": "Uploaded",
             "content": {
               "application/json": {
-                "schema": { "type": "object", "properties": { "url": { "type": "string" } } }
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
         }
       }
     },
     "/workspaces/{url}/analytics/clicks": {
       "get": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Retrieve click totals",
         "operationId": "getWorkspaceClicks",
-        "parameters": [{ "$ref": "#/components/parameters/WorkspaceSlug" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1322,55 +2726,104 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "totalClicks": { "type": "integer" } }
+                  "properties": {
+                    "totalClicks": {
+                      "type": "integer"
+                    }
+                  }
                 }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/workspaces/{url}/analytics/stats": {
       "get": {
-        "tags": ["Workspaces"],
+        "tags": [
+          "Workspaces"
+        ],
         "summary": "Retrieve geographic analytics",
         "description": "Country, region or city breakdown. Optionally scoped to a single link or document.",
         "operationId": "getWorkspaceGeoStats",
         "parameters": [
-          { "$ref": "#/components/parameters/WorkspaceSlug" },
-          { "$ref": "#/components/parameters/StartDate" },
-          { "$ref": "#/components/parameters/EndDate" },
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          },
+          {
+            "$ref": "#/components/parameters/StartDate"
+          },
+          {
+            "$ref": "#/components/parameters/EndDate"
+          },
           {
             "name": "selector",
             "in": "query",
             "description": "Breakdown dimension.",
-            "schema": { "type": "string", "enum": ["country", "region", "city"], "default": "country" }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "country",
+                "region",
+                "city"
+              ],
+              "default": "country"
+            }
           },
-          { "name": "linkId", "in": "query", "description": "Scope to one link.", "schema": { "type": "string" } },
+          {
+            "name": "linkId",
+            "in": "query",
+            "description": "Scope to one link.",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "documentId",
             "in": "query",
             "description": "Scope to one document's links.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GeoStats" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeoStats"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": { "$ref": "#/components/responses/Forbidden" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/users/me": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Retrieve the authenticated user",
         "operationId": "getCurrentUser",
         "responses": {
@@ -1380,45 +2833,219 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "user": { "$ref": "#/components/schemas/User" } }
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
                 }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "404": { "$ref": "#/components/responses/NotFound" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
         }
       }
     },
     "/users/usage": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Retrieve usage",
         "description": "Usage and limits for the current billing period.",
         "operationId": "getUsage",
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Usage" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Usage"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "404": { "description": "No subscription" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "No subscription"
+          }
         }
       }
     },
     "/subscriptions": {
       "get": {
-        "tags": ["Subscriptions"],
+        "tags": [
+          "Subscriptions"
+        ],
         "summary": "Retrieve subscription",
         "description": "Plan, billing state and effective limits for the authenticated user.",
         "operationId": "getSubscription",
         "responses": {
           "200": {
             "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Subscription" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                }
+              }
+            }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "500": { "$ref": "#/components/responses/ServerError" }
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/workspaces/{url}/analytics/export": {
+      "get": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Export analytics",
+        "description": "Analytics as a downloadable file. `kind=clicks` returns one row per click \u2014 with its date, country, city, device, browser, OS, referrer and language \u2014 which is what makes questions that cross two dimensions answerable at all. The other kinds return the breakdowns the dashboard charts.\n\nOne kind returns CSV; several return an .xlsx with a sheet per kind, since the columns differ per kind. Every analytics filter applies, so the file matches what the dashboard would show.\n\nRequires a paid plan. Free workspaces cannot see the geographic or device breakdowns on the dashboard either, and this would hand over more than that.",
+        "operationId": "exportWorkspaceAnalytics",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceSlug"
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "description": "Which view(s) to export, comma-separated.",
+            "schema": {
+              "type": "string",
+              "default": "clicks",
+              "example": "clicks"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "File format. Defaults to `csv` for one kind and `xlsx` for several.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "xlsx"
+              ]
+            }
+          },
+          {
+            "name": "columns",
+            "in": "query",
+            "description": "Columns to include, comma-separated. Applies only when one kind is requested \u2014 the keys differ per kind, so several kinds each use their own defaults.",
+            "schema": {
+              "type": "string",
+              "example": "timestamp,shortUrl,country"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/StartDate"
+          },
+          {
+            "$ref": "#/components/parameters/EndDate"
+          },
+          {
+            "$ref": "#/components/parameters/FilterLink"
+          },
+          {
+            "$ref": "#/components/parameters/FilterLinkType"
+          },
+          {
+            "$ref": "#/components/parameters/FilterTag"
+          },
+          {
+            "$ref": "#/components/parameters/FilterDomain"
+          },
+          {
+            "$ref": "#/components/parameters/FilterCreator"
+          },
+          {
+            "$ref": "#/components/parameters/FilterCountry"
+          },
+          {
+            "$ref": "#/components/parameters/FilterCity"
+          },
+          {
+            "$ref": "#/components/parameters/FilterRegion"
+          },
+          {
+            "$ref": "#/components/parameters/FilterDevice"
+          },
+          {
+            "$ref": "#/components/parameters/FilterBrowser"
+          },
+          {
+            "$ref": "#/components/parameters/FilterOs"
+          },
+          {
+            "$ref": "#/components/parameters/FilterReferrer"
+          },
+          {
+            "$ref": "#/components/parameters/FilterLanguage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The file. `X-Export-Rows` carries the row count; `X-Export-Truncated: true` means the 50,000-row limit was reached and the file stops short of the full answer.",
+            "headers": {
+              "X-Export-Rows": {
+                "description": "Rows written, across every sheet.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "X-Export-Truncated": {
+                "description": "Present and `true` when the row limit was reached.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "Not a member of the workspace, or the workspace is on the free plan \u2014 exporting analytics requires a paid plan.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/BadRequest"
+          }
         }
       }
     }
