@@ -1,0 +1,89 @@
+---
+title: "Export analytics"
+openapi: "GET /workspaces/{url}/analytics/export"
+description: Download analytics as a file — one row per click, or any of the breakdowns the dashboard shows.
+---
+
+## Why this exists
+
+The other analytics endpoints return totals: clicks per link, clicks per
+country. They cannot answer a question that crosses two dimensions — "how many
+clicks came from outside these three countries, between the 6th and the 12th" —
+because the answer is not any one of those totals.
+
+`kind=clicks` returns the rows underneath them: one per click, carrying its
+date, country, city, device, browser, OS, referrer and language. Anything that
+can be expressed as a filter over those columns becomes a filter in a
+spreadsheet, or three lines of script.
+
+## Choosing what comes back
+
+`kind` accepts one view or several, comma-separated.
+
+| `kind` | One row per |
+|---|---|
+| `clicks` | click — every dimension on it |
+| `timeline` | day |
+| `links` | short link |
+| `countries` `cities` | country, city |
+| `devices` `browsers` `os` | device type, browser, operating system |
+| `referrers` | traffic source |
+| `languages` | language |
+
+One view returns a **CSV**. Several return an **`.xlsx` with a sheet per view**,
+because the columns differ per view and could not share one table. `format`
+overrides that either way — `format=csv` gives one file with a titled section
+per view, which is easier to parse and harder to read.
+
+## Filtering
+
+Every parameter the analytics dashboard filters by works here, and the file
+matches what the dashboard would show for the same filters.
+
+Values within one parameter are **OR**; parameters combine with **AND**. So
+`country=FR,DE&device=mobile` means "France or Germany, on mobile". `region` and
+`city` work the same way.
+
+<Note>
+  A filter that selects nothing returns a file with only its headers. That is the
+  answer, not an error — `link=…&domain=…` for a link that lives on a different
+  domain genuinely matches no clicks.
+</Note>
+
+## Examples
+
+Every click in a date range, as CSV:
+
+```bash
+curl -G https://api.reqlick.com/workspaces/acme/analytics/export \
+  -H "Authorization: Bearer rqk_xxx" \
+  -d kind=clicks \
+  -d startDate=2026-08-06 \
+  -d endDate=2026-08-12 \
+  -o clicks.csv
+```
+
+Excluding three countries needs no parameter — take the clicks and filter them:
+
+```bash
+curl -G https://api.reqlick.com/workspaces/acme/analytics/export \
+  -H "Authorization: Bearer rqk_xxx" \
+  -d kind=clicks -d startDate=2026-08-06 -d endDate=2026-08-12 \
+  | awk -F, 'NR==1 || ($4 != "Tunisia" && $4 != "France" && $4 != "Brazil")'
+```
+
+Countries and devices together, as a workbook with two sheets:
+
+```bash
+curl -G https://api.reqlick.com/workspaces/acme/analytics/export \
+  -H "Authorization: Bearer rqk_xxx" \
+  -d kind=countries,devices \
+  -o breakdown.xlsx
+```
+
+## Limits
+
+A response carries at most **50,000 rows**. When it stops there, the response
+sets `X-Export-Truncated: true` — narrow the date range and take the rest, rather
+than reading a truncated file as a complete answer. `X-Export-Rows` always
+carries the row count.
