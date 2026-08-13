@@ -16,6 +16,12 @@ date, country, city, device, browser, OS, referrer and language. Anything that
 can be expressed as a filter over those columns becomes a filter in a
 spreadsheet, or three lines of script.
 
+## Plan
+
+Exporting analytics requires a **paid plan**. A free workspace cannot see the
+geographic or device breakdowns on the dashboard, and this endpoint would hand
+over more than that — so it answers `403` rather than quietly returning less.
+
 ## Choosing what comes back
 
 `kind` accepts one view or several, comma-separated.

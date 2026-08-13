@@ -2913,7 +2913,7 @@
           "Workspaces"
         ],
         "summary": "Export analytics",
-        "description": "Analytics as a downloadable file. `kind=clicks` returns one row per click \u2014 with its date, country, city, device, browser, OS, referrer and language \u2014 which is what makes questions that cross two dimensions answerable at all. The other kinds return the breakdowns the dashboard charts.\n\nOne kind returns CSV; several return an .xlsx with a sheet per kind, since the columns differ per kind. Every analytics filter applies, so the file matches what the dashboard would show.",
+        "description": "Analytics as a downloadable file. `kind=clicks` returns one row per click \u2014 with its date, country, city, device, browser, OS, referrer and language \u2014 which is what makes questions that cross two dimensions answerable at all. The other kinds return the breakdowns the dashboard charts.\n\nOne kind returns CSV; several return an .xlsx with a sheet per kind, since the columns differ per kind. Every analytics filter applies, so the file matches what the dashboard would show.\n\nRequires a paid plan. Free workspaces cannot see the geographic or device breakdowns on the dashboard either, and this would hand over more than that.",
         "operationId": "exportWorkspaceAnalytics",
         "parameters": [
           {
@@ -3031,7 +3031,14 @@
             "$ref": "#/components/responses/Unauthorized"
           },
           "403": {
-            "$ref": "#/components/responses/Forbidden"
+            "description": "Not a member of the workspace, or the workspace is on the free plan \u2014 exporting analytics requires a paid plan.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
