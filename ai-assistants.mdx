@@ -1,0 +1,127 @@
+---
+title: "Reqlick in Claude and ChatGPT"
+description: "Connect Reqlick to Claude, ChatGPT, Cursor or any MCP client. Create links and QR codes, share files and read analytics by asking."
+---
+
+Reqlick has a remote MCP server. Connect it once and your AI assistant can work in your Reqlick workspaces for you.
+
+```text
+https://api.reqlick.com/mcp
+```
+
+You sign in with your Reqlick account. Every plan can connect, and your plan's limits apply as they do in the dashboard.
+
+## Connect
+
+<Tabs>
+  <Tab title="Claude">
+    1. Open **Settings → Connectors** on claude.ai.
+    2. Choose **Add custom connector**. Name it `Reqlick` and paste the URL above.
+    3. Keep the defaults, **Sign in now** and **Use Claude's published identity**, then click **Add**.
+    4. Click **Connect** and sign in with your Reqlick account.
+
+    The connector also works in the Claude desktop and mobile apps.
+  </Tab>
+  <Tab title="ChatGPT">
+    1. Open **Plugins** in ChatGPT, click **+**, then **Create app**.
+    2. Name it `Reqlick`, paste the URL above as the server URL and keep **OAuth**.
+    3. Accept the notice about custom servers and create the app.
+    4. Sign in with your Reqlick account when ChatGPT asks.
+
+    If you don't see **Create app**, turn on developer mode in ChatGPT's settings first.
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http reqlick https://api.reqlick.com/mcp
+    ```
+
+    Then run `/mcp` in Claude Code, pick `reqlick` and sign in.
+  </Tab>
+  <Tab title="Cursor and others">
+    Add a remote MCP server with the URL above. Any client that supports streamable HTTP and OAuth works.
+
+    ```json
+    {
+      "mcpServers": {
+        "reqlick": { "url": "https://api.reqlick.com/mcp" }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+To check the connection, ask: **"Who am I on Reqlick?"** The assistant lists your account and workspaces.
+
+## What you can ask
+
+<AccordionGroup>
+  <Accordion title="Short links" icon="link">
+    Create, search, edit, pause and archive links. Edits cover the destination, short key, title, expiry, password, iPhone and Android destinations, tags and UTM parameters.
+
+    - "Shorten https://example.com/spring-sale as rqk.sh/spring in my Marketing workspace."
+    - "Add utm_source=newsletter to rqk.sh/spring."
+    - "Pause rqk.sh/spring, and tag it black-friday."
+  </Accordion>
+  <Accordion title="QR codes" icon="qrcode">
+    Create a QR code with your colours and shapes. The assistant shows the image in the chat. You can restyle it later, and the printed code keeps working because the short URL does not change.
+
+    - "Make a dark blue QR code with rounded dots for https://example.com/menu."
+    - "Point the menu QR code at the new winter menu."
+  </Accordion>
+  <Accordion title="Files" icon="file">
+    Assistants that can send a local file over HTTP, like Claude Code, Cursor and custom agents, can share a file as a link or a QR code. They ask Reqlick for an upload link, upload the file, then create the link.
+
+    A file attached in the claude.ai or ChatGPT chat window cannot reach Reqlick. Upload it in the dashboard first, then ask the assistant to share it.
+
+    - "Share ./brochure.pdf as rqk.sh/brochure."
+    - "Replace the file behind rqk.sh/brochure with ./brochure-v2.pdf."
+  </Accordion>
+  <Accordion title="Bulk creation" icon="layer-group">
+    Up to 100 links, or 25 QR codes, in one request. Rows that fail come back with a reason, and the rest are still created.
+
+    - "Shorten these 30 product URLs with utm_campaign=autumn."
+  </Accordion>
+  <Accordion title="Analytics" icon="chart-line">
+    Clicks over time, top links, and breakdowns by country, region, city, device, browser, OS, language and referrer. Paid plans can also export up to 200 clicks as CSV.
+
+    - "How many clicks did rqk.sh/spring get this month, by country?"
+    - "Which QR code was scanned most this year?"
+  </Accordion>
+</AccordionGroup>
+
+## Plans and limits
+
+The assistant acts as you, with the same rules as the dashboard.
+
+| | Free | Paid plans |
+|---|---|---|
+| Links, QR codes, files | Up to your plan's limits | Up to your plan's limits |
+| Password, expiry, device targeting | No | Pro and above |
+| Click counts | Yes | Yes |
+| Visitors, trends, breakdowns, export | No | Yes |
+| Analytics history | 30 days | Your plan's retention |
+
+When a limit is reached, the assistant tells you why. Read-only members can search and read analytics but cannot change anything. Requests share the API's rate limit of 100 per minute.
+
+## Privacy and access
+
+- You sign in with OAuth. The assistant never sees your password, and Reqlick never sees your conversation.
+- The assistant can only reach workspaces you belong to.
+- Every change the assistant makes is recorded in Reqlick's audit log, like a change made in the dashboard.
+- To disconnect, remove the Reqlick connector in your assistant's settings.
+
+Read the [privacy policy](https://reqlick.com/privacy-policy) for what Reqlick stores.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="No Reqlick account found for this login">
+    You signed in with an account that has no Reqlick workspace. Sign in with the email you use on app.reqlick.com.
+  </Accordion>
+  <Accordion title="The link is saved but not redirecting yet">
+    Ask the assistant to update the link with no changes. That publishes it again.
+  </Accordion>
+  <Accordion title="Something else">
+    Write to [support@reqlick.com](mailto:support@reqlick.com) with the prompt you used and the time.
+  </Accordion>
+</AccordionGroup>
